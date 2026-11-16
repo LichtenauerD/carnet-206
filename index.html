@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Carnet 206+</title>
+<meta name="theme-color" content="#f4f5f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111214" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Carnet 206+">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png">
+<style>
+:root{
+  --fond:#f4f5f7; --carte:#ffffff; --carte-2:#f0f1f4; --texte:#16181b; --texte-2:#5b6068; --texte-3:#8a9099;
+  --trait:#e3e5e9; --accent:#2a78d6; --accent-doux:#e6f0fb; --accent-texte:#ffffff;
+  --ok:#0ca30c; --attention:#fab219; --retard:#d03b3b; --inconnu:#8a9099;
+  --ok-fond:#e7f6e7; --attention-fond:#fff4dc; --retard-fond:#fbe7e7; --inconnu-fond:#eef0f2;
+  --serie:#2a78d6; --ombre:0 1px 2px rgba(16,24,40,.05),0 1px 3px rgba(16,24,40,.06);
+  --rayon:16px; --sab:env(safe-area-inset-bottom,0px); --sat:env(safe-area-inset-top,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --fond:#111214; --carte:#1c1e21; --carte-2:#26292d; --texte:#f0f1f2; --texte-2:#b3b8bf; --texte-3:#878d95;
+    --trait:#2e3136; --accent:#3987e5; --accent-doux:#1b2a3d; --serie:#3987e5;
+    --ok-fond:#15281a; --attention-fond:#2e2614; --retard-fond:#321818; --inconnu-fond:#25282c;
+    --ombre:none;
+  }
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--fond);color:var(--texte);font:16px/1.4 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
+body{padding-top:var(--sat);padding-bottom:calc(76px + var(--sab));min-height:100vh}
+button,input,select,textarea{font:inherit;color:inherit}
+h1{font-size:28px;line-height:1.15;margin:0;font-weight:700;letter-spacing:-.02em}
+h2{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--texte-3);font-weight:600;margin:22px 4px 8px}
+h3{font-size:17px;margin:0 0 4px;font-weight:600}
+p{margin:0 0 10px}
+a{color:var(--accent)}
+.vue{display:none;padding:12px 16px 24px;max-width:640px;margin:0 auto}
+.vue.active{display:block}
+.entete{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin:8px 4px 6px}
+.entete .sous{color:var(--texte-2);font-size:14px;margin-top:4px}
+.carte{background:var(--carte);border-radius:var(--rayon);box-shadow:var(--ombre);padding:16px;margin-bottom:12px}
+.carte.plate{padding:0;overflow:hidden}
+.liste-item{display:flex;align-items:center;gap:12px;padding:13px 16px;border-top:1px solid var(--trait);cursor:pointer;background:none;border-left:0;border-right:0;border-bottom:0;width:100%;text-align:left}
+.liste-item:first-child{border-top:0}
+.liste-item .corps{flex:1;min-width:0}
+.liste-item .titre{font-weight:500}
+.liste-item .detail{color:var(--texte-2);font-size:14px}
+.liste-item .droite{color:var(--texte-2);font-size:14px;text-align:right;white-space:nowrap}
+.chevron{color:var(--texte-3);font-size:20px;line-height:1}
+.pastille{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;padding:3px 8px;border-radius:999px;white-space:nowrap}
+.pastille .ico{font-size:11px;line-height:1}
+.st-ok{background:var(--ok-fond);color:#0a7d0a}.st-bientot{background:var(--attention-fond);color:#8a5a00}
+.st-retard{background:var(--retard-fond);color:var(--retard)}.st-inconnu{background:var(--inconnu-fond);color:var(--texte-2)}
+@media (prefers-color-scheme: dark){.st-ok{color:#5fd35f}.st-bientot{color:var(--attention)}.st-retard{color:#f07a7a}}
+.barre{height:4px;border-radius:2px;background:var(--carte-2);margin-top:8px;overflow:hidden}
+.barre i{display:block;height:100%;border-radius:2px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;padding:13px 18px;font-weight:600;cursor:pointer;background:var(--accent);color:var(--accent-texte);width:100%}
+.btn.second{background:var(--accent-doux);color:var(--accent)}
+.btn.discret{background:var(--carte-2);color:var(--texte)}
+.btn.danger{background:var(--retard-fond);color:var(--retard)}
+.btn.petit{width:auto;padding:8px 14px;font-size:14px;border-radius:10px}
+.btn:disabled{opacity:.5}
+.rangee{display:flex;gap:10px}.rangee>*{flex:1}
+.voiture{display:block;width:100%;max-width:420px;margin:0 auto;height:auto}
+.km-gros{font-size:34px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.muet{color:var(--texte-2);font-size:14px}
+.tres-muet{color:var(--texte-3);font-size:13px}
+.alerte{border-radius:var(--rayon);padding:14px 16px;margin-bottom:12px;display:flex;gap:12px;align-items:flex-start}
+.alerte.att{background:var(--attention-fond)}.alerte.ret{background:var(--retard-fond)}.alerte.info{background:var(--accent-doux)}
+.alerte b{display:block}
+.tuiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.tuile{background:var(--carte);border-radius:14px;padding:14px;box-shadow:var(--ombre)}
+.tuile .val{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.tuile .lib{font-size:13px;color:var(--texte-2)}
+/* barre d'onglets */
+.onglets{position:fixed;left:0;right:0;bottom:0;background:color-mix(in srgb,var(--carte) 88%,transparent);backdrop-filter:saturate(180%) blur(18px);-webkit-backdrop-filter:saturate(180%) blur(18px);border-top:1px solid var(--trait);display:flex;padding:6px 4px calc(6px + var(--sab));z-index:20}
+.onglets button{flex:1;background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--texte-3);padding:4px 0;cursor:pointer}
+.onglets button svg{width:24px;height:24px}
+.onglets button.actif{color:var(--accent)}
+.fab{position:fixed;right:18px;bottom:calc(86px + var(--sab));width:56px;height:56px;border-radius:50%;border:0;background:var(--accent);color:#fff;font-size:30px;line-height:1;box-shadow:0 6px 16px rgba(42,120,214,.35);cursor:pointer;z-index:21;display:none}
+body[data-vue="journal"] .fab,body[data-vue="accueil"] .fab,body[data-vue="entretien"] .fab{display:block}
+/* feuilles */
+.voile{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:40;opacity:0;pointer-events:none;transition:opacity .2s}
+.voile.ouvert{opacity:1;pointer-events:auto}
+.feuille{position:fixed;left:0;right:0;bottom:0;max-height:92vh;overflow:auto;background:var(--fond);border-radius:18px 18px 0 0;z-index:41;transform:translateY(105%);transition:transform .25s ease;padding:8px 16px calc(20px + var(--sab));max-width:640px;margin:0 auto;-webkit-overflow-scrolling:touch}
+.feuille:not(.ouvert){visibility:hidden;transition:transform .25s ease,visibility 0s .25s}
+.feuille.ouvert{transform:none}
+.feuille .poignee{width:38px;height:5px;border-radius:3px;background:var(--trait);margin:4px auto 10px}
+.feuille .tete{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px}
+.feuille .tete h3{font-size:19px;margin:0}
+.fermer{background:var(--carte-2);border:0;border-radius:50%;width:30px;height:30px;font-size:16px;cursor:pointer;color:var(--texte-2);flex:none}
+.champ{display:block;margin-bottom:12px}
+.champ>span{display:block;font-size:13px;color:var(--texte-2);margin:0 4px 5px}
+.champ input,.champ select,.champ textarea{width:100%;background:var(--carte);border:1px solid var(--trait);border-radius:12px;padding:12px 14px;font-size:17px;outline:none;-webkit-appearance:none;appearance:none}
+.champ input:focus,.champ select:focus,.champ textarea:focus{border-color:var(--accent)}
+.champ textarea{min-height:70px;resize:vertical}
+.aide{font-size:13px;color:var(--texte-3);margin:-6px 4px 12px}
+.choix{display:grid;gap:8px;margin-bottom:12px}
+.choix label{display:flex;gap:12px;align-items:center;background:var(--carte);border:1.5px solid var(--trait);border-radius:12px;padding:12px 14px;cursor:pointer}
+.choix input{accent-color:var(--accent);width:20px;height:20px;flex:none}
+.choix label:has(input:checked){border-color:var(--accent);background:var(--accent-doux)}
+.puces{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.puces button{border:1.5px solid var(--trait);background:var(--carte);border-radius:999px;padding:8px 14px;cursor:pointer;font-size:14px}
+.puces button.actif{border-color:var(--accent);background:var(--accent-doux);color:var(--accent);font-weight:600}
+.segment{display:flex;background:var(--carte-2);border-radius:10px;padding:3px;margin-bottom:12px;overflow-x:auto}
+.segment button{flex:1;border:0;background:none;padding:7px 10px;border-radius:8px;font-size:14px;cursor:pointer;white-space:nowrap;color:var(--texte-2)}
+.segment button.actif{background:var(--carte);color:var(--texte);font-weight:600;box-shadow:var(--ombre)}
+.interrupteur{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--carte);border:1px solid var(--trait);border-radius:12px;padding:12px 14px;margin-bottom:12px}
+.interrupteur input{width:46px;height:28px;-webkit-appearance:none;appearance:none;background:var(--trait);border-radius:999px;position:relative;cursor:pointer;transition:background .2s;flex:none}
+.interrupteur input::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.interrupteur input:checked{background:var(--ok)}.interrupteur input:checked::after{left:21px}
+.ops-coches{background:var(--carte);border-radius:12px;border:1px solid var(--trait);margin-bottom:12px;max-height:260px;overflow:auto}
+.ops-coches label{display:flex;gap:10px;align-items:center;padding:11px 14px;border-top:1px solid var(--trait);font-size:15px}
+.ops-coches label:first-child{border-top:0}
+.ops-coches input{accent-color:var(--accent);width:19px;height:19px}
+.mois{font-size:13px;color:var(--texte-3);font-weight:600;margin:16px 4px 6px;text-transform:capitalize}
+.ic-rond{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex:none;background:var(--carte-2);font-size:17px}
+.toast{position:fixed;left:50%;bottom:calc(96px + var(--sab));transform:translateX(-50%) translateY(20px);background:var(--texte);color:var(--fond);padding:10px 16px;border-radius:12px;font-size:14px;opacity:0;transition:all .25s;z-index:60;pointer-events:none;max-width:90vw;text-align:center}
+.toast.vu{opacity:1;transform:translateX(-50%)}
+.sync{font-size:12px;color:var(--texte-3);display:flex;align-items:center;gap:5px;white-space:nowrap}
+.sync i{width:8px;height:8px;border-radius:50%;background:var(--inconnu);display:inline-block}
+.sync.ok i{background:var(--ok)}.sync.err i{background:var(--retard)}.sync.cours i{background:var(--attention)}
+.etapes{display:flex;gap:6px;justify-content:center;margin:6px 0 18px}
+.etapes i{width:7px;height:7px;border-radius:50%;background:var(--trait)}.etapes i.fait{background:var(--accent)}
+.accueil-config{min-height:calc(100vh - 40px);display:flex;flex-direction:column}
+.graph{width:100%;height:auto;display:block;overflow:visible}
+.graph text{fill:var(--texte-2);font-size:11px}
+.graph .axe{stroke:var(--trait)}
+.graph rect.b{fill:var(--serie)}
+.bulle{position:absolute;background:var(--texte);color:var(--fond);font-size:13px;padding:6px 9px;border-radius:8px;pointer-events:none;white-space:nowrap;transform:translate(-50%,-110%);display:none}
+.code{font-family:ui-monospace,Menlo,monospace;font-size:14px;background:var(--carte-2);padding:8px 10px;border-radius:8px;word-break:break-all;display:block;margin:6px 0 10px}
+ol.guide{padding-left:20px;margin:0 0 10px}ol.guide li{margin-bottom:6px}
+.niv{width:8px;height:8px;border-radius:50%;flex:none;margin-top:7px}
+.niv.eleve{background:var(--retard)}.niv.moyen{background:var(--attention)}.niv.faible{background:var(--inconnu)}.niv.info{background:var(--accent)}
+.badge-src{font-size:12px;padding:2px 8px;border-radius:6px;background:var(--carte-2);color:var(--texte-2);font-weight:600}
+.vide{text-align:center;color:var(--texte-2);padding:28px 16px}
+</style>
+</head>
+<body data-vue="accueil">
+
+<!-- ACCUEIL -->
+<section class="vue active" id="v-accueil">
+  <div class="entete">
+    <div><h1 id="a-nom">Ma 206+</h1><div class="sous" id="a-sous"></div></div>
+    <div class="sync" id="a-sync"><i></i><span>Local</span></div>
+  </div>
+  <div id="a-3d" style="height:210px;margin:0 -16px;position:relative;display:none"><span class="tres-muet" style="position:absolute;right:20px;bottom:2px;pointer-events:none">Glisse pour faire tourner</span></div>
+  <div id="a-voiture"></div>
+  <div class="carte plate" id="a-etat"></div>
+  <div class="carte" id="a-kmc" style="display:flex;align-items:center;gap:12px">
+    <div style="flex:1;min-width:0"><div class="km-gros" id="a-km" style="font-size:26px">—</div><div class="tres-muet" id="a-km-detail"></div></div>
+    <button class="btn petit" data-action="km" id="a-km-btn">Noter</button>
+  </div>
+  <div id="a-notes"></div>
+</section>
+
+<!-- ENTRETIEN -->
+<section class="vue" id="v-entretien">
+  <div class="entete"><div><h1>Carnet</h1><div class="sous" id="e-sous"></div></div></div>
+  <div id="e-liste"></div>
+</section>
+
+<!-- JOURNAL -->
+<section class="vue" id="v-journal">
+  <div class="entete"><div><h1>Historique</h1><div class="sous">Tout ce qui a été fait, du plus récent au plus ancien</div></div></div>
+  <div class="segment" id="j-filtre">
+    <button data-f="tout" class="actif">Tout</button><button data-f="intervention">Garage</button><button data-f="plein">Pleins</button><button data-f="depense">Dépenses</button><button data-f="releve">Compteur</button>
+  </div>
+  <div id="j-liste"></div>
+</section>
+
+<!-- COUTS -->
+<section class="vue" id="v-couts">
+  <div class="entete"><div><h1>Dépenses</h1><div class="sous">Ce que coûte la voiture</div></div></div>
+  <div id="c-contenu"></div>
+</section>
+
+<!-- PLUS -->
+<section class="vue" id="v-plus">
+  <div class="entete"><div><h1>Réglages</h1><div class="sous">Véhicule, sauvegarde, notifications</div></div></div>
+  <div id="p-contenu"></div>
+</section>
+
+<button class="fab" data-action="ajouter" aria-label="Ajouter">+</button>
+
+<nav class="onglets">
+  <button data-vue="accueil" class="actif"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>Accueil</button>
+  <button data-vue="entretien"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/></svg>Carnet</button>
+  <button data-vue="journal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h11l3 3v13H5z"/><path d="M8 10h8M8 14h8M8 18h5"/></svg>Historique</button>
+  <button data-vue="couts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Dépenses</button>
+  <button data-vue="plus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Réglages</button>
+</nav>
+
+<div class="voile" id="voile"></div>
+<div class="feuille" id="feuille"><div class="poignee"></div><div id="feuille-contenu"></div></div>
+<div class="toast" id="toast"></div>
+
+<script src="voiture3d.js"></script>
+<script src="plans.js"></script>
+<script src="moteur.js"></script>
+<script>
+'use strict';
+const M = window.MOTEUR, P = window.PLANS;
+const CLE = 'carnet206.donnees', CLE_SYNC = 'carnet206.sync';
+let D = M.normaliser(lireLocal());
+let SYNC = Object.assign({ token: '', depot: 'LichtenauerD/carnet-206-donnees', chemin: 'donnees.json', derniere: null, etat: 'local', message: '' }, lireJSON(CLE_SYNC));
+
+// ---------- utilitaires ----------
+function lireJSON(k) { try { return JSON.parse(localStorage.getItem(k) || 'null') || {}; } catch (e) { return {}; } }
+function lireLocal() { try { return JSON.parse(localStorage.getItem(CLE) || 'null'); } catch (e) { return null; } }
+function ecrireLocal() { try { localStorage.setItem(CLE, JSON.stringify(D)); } catch (e) {} }
+function sauverSyncCfg() { try { localStorage.setItem(CLE_SYNC, JSON.stringify(SYNC)); } catch (e) {} }
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const nf = n => n == null || isNaN(n) ? '—' : Math.round(n).toLocaleString('fr-FR');
+const euros = n => n == null || isNaN(n) ? '—' : n.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: n >= 100 ? 0 : 2 });
+const isoAuj = () => M.versIso(M.aujourdhui());
+function dateFr(iso, court) {
+  if (!iso) return '—';
+  const d = M.versDate(iso);
+  return d.toLocaleDateString('fr-FR', court ? { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' } : { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+}
+function dans(j) {
+  if (j == null) return '';
+  if (j < 0) return `en retard de ${duree(-j)}`;
+  if (j === 0) return "aujourd'hui";
+  return `dans ${duree(j)}`;
+}
+function duree(j) {
+  if (j < 45) return `${j} j`;
+  if (j < 730) return `${Math.round(j / 30.44)} mois`;
+  const a = j / 365.25; return `${a.toFixed(a < 10 ? 1 : 0).replace('.', ',')} ans`;
+}
+function toast(t) { const e = $('#toast'); e.textContent = t; e.classList.add('vu'); clearTimeout(toast.t); toast.t = setTimeout(() => e.classList.remove('vu'), 2400); }
+const STATUTS = {
+  ok: { lib: 'À jour', ico: '✓', cls: 'st-ok', coul: 'var(--ok)' },
+  bientot: { lib: 'Bientôt', ico: '!', cls: 'st-bientot', coul: 'var(--attention)' },
+  retard: { lib: 'En retard', ico: '✕', cls: 'st-retard', coul: 'var(--retard)' },
+  inconnu: { lib: 'À renseigner', ico: '?', cls: 'st-inconnu', coul: 'var(--inconnu)' }
+};
+const pastille = s => `<span class="pastille ${STATUTS[s].cls}"><span class="ico">${STATUTS[s].ico}</span>${STATUTS[s].lib}</span>`;
+const ICONES = { huile: '🛢️', filtre: '🌀', bougie: '⚡', frein: '🛑', distri: '⚙️', essieu: '🔩', batterie: '🔋', pneu: '🛞', refroid: '🌡️', clim: '❄️', essuie: '🌧️', ct: '📋', assurance: '🛡️' };
+const nomCategorie = id => (P.REPARATIONS.find(c => c.id === id) || { nom: 'Réparation' }).nom;
+const ICONES_J = { intervention: '🔧', plein: '⛽', depense: '💶', releve: '📍' };
+
+// ---------- illustration ----------
+function svgVoiture() {
+  return `<svg class="voiture" viewBox="0 0 360 150" role="img" aria-label="Illustration d'une citadine grise">
+  <defs>
+    <linearGradient id="carros" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c3c8cd"/><stop offset=".45" stop-color="#9aa1a8"/><stop offset="1" stop-color="#6d747b"/></linearGradient>
+    <linearGradient id="vitre" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3c4650"/><stop offset="1" stop-color="#1d242b"/></linearGradient>
+    <radialGradient id="jante"><stop offset="0" stop-color="#e4e7ea"/><stop offset="1" stop-color="#9ca3aa"/></radialGradient>
+  </defs>
+  <ellipse cx="182" cy="134" rx="160" ry="8" fill="#000" opacity=".12"/>
+  <path d="M22,106 C18,96 20,86 30,82 L126,62 C142,50 160,38 182,31 L248,30 C272,31 296,40 312,54 L334,72 C341,78 343,92 341,106 L300,108 A30,30 0 0 0 240,108 L116,108 A30,30 0 0 0 56,108 Z" fill="url(#carros)" stroke="#5d646b" stroke-width="1"/>
+  <path d="M138,63 C152,52 168,42 188,36 L226,35 L228,63 Z" fill="url(#vitre)"/>
+  <path d="M236,35 L248,34 C268,35 288,43 300,53 L308,63 L238,63 Z" fill="url(#vitre)"/>
+  <path d="M30,84 L126,64" stroke="#ffffff" stroke-opacity=".35" stroke-width="2" fill="none"/>
+  <path d="M232,66 L234,104" stroke="#5d646b" stroke-width="1.2" fill="none"/>
+  <path d="M138,66 C136,82 136,96 140,104" stroke="#5d646b" stroke-width="1.2" fill="none"/>
+  <rect x="206" y="72" width="16" height="4" rx="2" fill="#5d646b"/>
+  <path d="M130,58 l12,-3 l2,8 l-12,2 z" fill="#7b8289"/>
+  <path d="M28,86 C40,78 58,74 74,74 C66,82 50,88 32,90 Z" fill="#eef3f7" stroke="#5d646b" stroke-width=".8"/>
+  <path d="M318,58 L334,73 L331,79 L314,64 Z" fill="#c8323a"/>
+  <path d="M24,100 L52,100" stroke="#4a5056" stroke-width="3" stroke-linecap="round"/>
+  <path d="M306,102 L340,101" stroke="#4a5056" stroke-width="3" stroke-linecap="round"/>
+  <g><circle cx="86" cy="110" r="24" fill="#1f2326"/><circle cx="86" cy="110" r="15" fill="url(#jante)"/><circle cx="86" cy="110" r="4" fill="#6d747b"/>
+    <g stroke="#7d848b" stroke-width="2.2">${[0,72,144,216,288].map(a=>`<line x1="86" y1="110" x2="${86+13*Math.cos(a*Math.PI/180)}" y2="${110+13*Math.sin(a*Math.PI/180)}"/>`).join('')}</g></g>
+  <g><circle cx="270" cy="110" r="24" fill="#1f2326"/><circle cx="270" cy="110" r="15" fill="url(#jante)"/><circle cx="270" cy="110" r="4" fill="#6d747b"/>
+    <g stroke="#7d848b" stroke-width="2.2">${[0,72,144,216,288].map(a=>`<line x1="270" y1="110" x2="${270+13*Math.cos(a*Math.PI/180)}" y2="${110+13*Math.sin(a*Math.PI/180)}"/>`).join('')}</g></g>
+</svg>`;
+}
+
+// ---------- vue 3D (repli sur le dessin si WebGL est indisponible) ----------
+let vue3D = null, plaque3D = null;
+function monter3D() {
+  if (!window.Voiture3D) return;
+  const plaque = (D.vehicule.immatriculation || '').toUpperCase();
+  if (vue3D && plaque3D === plaque) return;
+  const c = $('#a-3d');
+  if (vue3D) { vue3D.renderer.setAnimationLoop(null); vue3D.renderer.dispose(); vue3D.renderer.domElement.remove(); vue3D = null; }
+  c.style.display = 'block';
+  try { vue3D = window.Voiture3D.monter(c, { plaque }); } catch (e) { vue3D = null; }
+  if (!vue3D) { c.style.display = 'none'; window.Voiture3D = null; }
+  plaque3D = plaque;
+}
+
+// ---------- enregistrement ----------
+function modifier(fn, msg) {
+  fn(D);
+  D.maj = new Date().toISOString();
+  ecrireLocal();
+  rendre();
+  if (msg) toast(msg);
+  planifierSync();
+}
+
+// ---------- navigation ----------
+function allerA(v) {
+  document.body.dataset.vue = v;
+  $$('.vue').forEach(s => s.classList.toggle('active', s.id === 'v-' + v));
+  $$('.onglets button').forEach(b => b.classList.toggle('actif', b.dataset.vue === v));
+  window.scrollTo(0, 0);
+}
+$$('.onglets button').forEach(b => b.addEventListener('click', () => { allerA(b.dataset.vue); history.replaceState(null, '', '#' + b.dataset.vue); }));
+
+// ---------- feuilles ----------
+function ouvrir(html, apres) {
+  $('#feuille-contenu').innerHTML = html;
+  $('#voile').classList.add('ouvert'); $('#feuille').classList.add('ouvert');
+  $('#feuille').scrollTop = 0;
+  $$('#feuille [data-fermer]').forEach(b => b.addEventListener('click', fermer));
+  if (apres) apres($('#feuille'));
+}
+function fermer() { $('#voile').classList.remove('ouvert'); $('#feuille').classList.remove('ouvert'); }
+$('#voile').addEventListener('click', fermer);
+const tete = t => `<div class="tete"><h3>${t}</h3><button class="fermer" data-fermer aria-label="Fermer">✕</button></div>`;
+
+// ---------- rendu ----------
+function moteurNom() { const m = P.MOTEURS[D.vehicule.moteur]; return m ? m.nom : 'motorisation à préciser'; }
+function rendre() {
+  if (!D.configure) { lancerConfiguration(); return; }
+  rendreAccueil(); rendreEntretien(); rendreJournal(); rendreCouts(); rendrePlus(); rendreSync();
+}
+
+function ligneEcheance(e) {
+  const s = STATUTS[e.statut];
+  let det;
+  if (e.statut === 'inconnu') det = 'Dernière fois inconnue';
+  else {
+    det = `${dateFr(e.date, true)} · ${dans(e.joursRestants)}`;
+    if (e.critere === 'km' && e.km) det = `${nf(e.km)} km (≈ ${dateFr(e.date, true)}) · ${dans(e.joursRestants)}`;
+  }
+  const pct = Math.min(e.progression, 1) * 100;
+  return `<button class="liste-item" data-op="${e.op.id}">
+    <div class="ic-rond">${ICONES[e.op.icone] || '•'}</div>
+    <div class="corps"><div class="titre">${esc(e.op.nom)}</div><div class="detail">${det}</div>
+    ${e.statut !== 'inconnu' ? `<div class="barre"><i style="width:${pct}%;background:${s.coul}"></i></div>` : ''}</div>
+    ${pastille(e.statut)}</button>`;
+}
+
+function rendreAccueil() {
+  const v = D.vehicule;
+  $('#a-nom').textContent = v.nom || 'Ma 206+';
+  $('#a-sous').textContent = `${moteurNom()} · ${v.annee}`;
+  monter3D();
+  $('#a-voiture').innerHTML = vue3D ? '' : svgVoiture();
+  // état général : une phrase, puis au plus 3 lignes
+  const ech = M.toutesEcheances(D), pr = M.planReleve(D);
+  const ret = ech.filter(e => e.statut === 'retard'), bie = ech.filter(e => e.statut === 'bientot'), ok = ech.filter(e => e.statut === 'ok'), inc = ech.filter(e => e.statut === 'inconnu');
+  let titre, coul, liste;
+  if (ret.length) { titre = `${ret.length} opération${ret.length > 1 ? 's' : ''} en retard`; coul = 'var(--retard)'; liste = ret.concat(bie); }
+  else if (bie.length) { titre = `${bie.length} chose${bie.length > 1 ? 's' : ''} à prévoir`; coul = '#c98500'; liste = bie; }
+  else if (ok.length) { titre = 'Tout est à jour'; coul = 'var(--ok)'; liste = ok; }
+  else { titre = 'Carnet à compléter'; coul = 'var(--texte-2)'; liste = []; }
+  $('#a-etat').innerHTML = `<div style="padding:14px 16px 6px"><div style="font-size:20px;font-weight:700;color:${coul}">${titre}</div>${!ret.length && !bie.length && ok.length ? `<div class="tres-muet">Prochaine échéance : ${esc(ok[0].op.nom.toLowerCase())}, ${dans(ok[0].joursRestants)}</div>` : ''}</div>
+    ${liste.slice(0, 3).map(ligneEcheance).join('')}
+    <button class="liste-item" data-action="vers-entretien" style="padding:12px 16px"><div class="corps"><div class="titre" style="color:var(--accent);font-size:15px">Voir tout le carnet</div></div><span class="chevron">›</span></button>`;
+  // kilométrage, compact
+  const km = M.kmEstime(D), der = M.dernierPoint(D);
+  $('#a-km').textContent = km != null ? `≈ ${nf(km)} km` : '— km';
+  $('#a-km-detail').textContent = der ? (pr.aFaire ? `Relevé à faire (dernier il y a ${pr.joursDepuis} j)` : `Relevé il y a ${pr.joursDepuis} j · prochain dans ${pr.intervalle - pr.joursDepuis} j`) : 'Aucun relevé';
+  $('#a-km-btn').className = 'btn petit' + (pr.aFaire ? '' : ' second');
+  // rappels discrets
+  const notes = [];
+  if (inc.length) notes.push(`<button class="liste-item" data-action="vers-entretien"><div class="ic-rond">📝</div><div class="corps"><div class="titre" style="font-size:15px">${inc.length} élément${inc.length > 1 ? 's' : ''} à renseigner</div><div class="detail">Avec le carnet ou les factures</div></div><span class="chevron">›</span></button>`);
+  if (!SYNC.token) notes.push(`<button class="liste-item" data-action="vers-plus"><div class="ic-rond">☁️</div><div class="corps"><div class="titre" style="font-size:15px">Sauvegarde à activer</div><div class="detail">Les données ne sont que sur ce téléphone</div></div><span class="chevron">›</span></button>`);
+  $('#a-notes').innerHTML = notes.length ? `<div class="carte plate">${notes.join('')}</div>` : '';
+}
+
+function rendreEntretien() {
+  const ech = M.toutesEcheances(D);
+  const grp = { retard: [], bientot: [], inconnu: [], ok: [] };
+  ech.forEach(e => grp[e.statut].push(e));
+  const titres = { retard: 'En retard', bientot: 'À prévoir', ok: 'À jour', inconnu: 'À renseigner (dernière fois inconnue)' };
+  let h = '';
+  ['retard', 'bientot', 'ok', 'inconnu'].forEach(k => { if (grp[k].length) h += `<h2>${titres[k]}</h2><div class="carte plate">${grp[k].map(ligneEcheance).join('')}</div>`; });
+  const reps = D.interventions.filter(i => i.type === 'reparation').sort((a, b) => b.date.localeCompare(a.date));
+  h += `<h2>Dernières réparations</h2><div class="carte plate">${reps.length ? reps.slice(0, 5).map(i => `<button class="liste-item" data-j="intervention:${i.id}"><div class="ic-rond">🛠️</div><div class="corps"><div class="titre">${esc(i.libelle)}</div><div class="detail">${esc(nomCategorie(i.categorie))} · ${dateFr(i.date, true)}</div></div><div class="droite">${+i.cout ? euros(+i.cout) : ''}</div></button>`).join('') : '<div class="vide" style="padding:18px">Aucune réparation. Touche + après un passage au garage.</div>'}</div>`;
+  $('#e-liste').innerHTML = h;
+  $('#e-sous').textContent = `Plan ${moteurNom()} · touche une ligne pour le détail`;
+}
+
+let filtreJ = 'tout';
+function entreesJournal() {
+  const l = [];
+  D.interventions.forEach(x => l.push({ type: 'intervention', x, date: x.date, titre: x.libelle || libelleOps(x.operations), det: [x.type === 'reparation' ? nomCategorie(x.categorie) : null, x.km ? nf(x.km) + ' km' : null, x.moiMeme ? 'Fait moi-même' : (x.garage || null)].filter(Boolean).join(' · '), montant: +x.cout || 0 }));
+  D.pleins.forEach(x => l.push({ type: 'plein', x, date: x.date, titre: `Plein ${x.litres ? (+x.litres).toLocaleString('fr-FR', { maximumFractionDigits: 2 }) + ' L' : ''}`, det: [x.km ? nf(x.km) + ' km' : null, (+x.litres > 0 && +x.montant > 0) ? (x.montant / x.litres).toLocaleString('fr-FR', { maximumFractionDigits: 3 }) + ' €/L' : null, x.complet === false ? 'partiel' : null].filter(Boolean).join(' · '), montant: +x.montant || 0 }));
+  D.depenses.forEach(x => l.push({ type: 'depense', x, date: x.date, titre: x.libelle || x.categorie, det: x.categorie, montant: +x.montant || 0 }));
+  D.releves.forEach(x => l.push({ type: 'releve', x, date: x.date, titre: `${nf(x.km)} km`, det: 'Relevé de kilométrage', montant: 0 }));
+  return l.sort((a, b) => b.date.localeCompare(a.date));
+}
+function rendreJournal() {
+  const l = entreesJournal().filter(e => filtreJ === 'tout' || e.type === filtreJ);
+  if (!l.length) { $('#j-liste').innerHTML = '<div class="vide">Aucune entrée. Touche + pour ajouter.</div>'; return; }
+  let h = '', moisCourant = '';
+  l.forEach((e, i) => {
+    const m = M.versDate(e.date).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric', timeZone: 'UTC' });
+    if (m !== moisCourant) { if (moisCourant) h += '</div>'; h += `<div class="mois">${m}</div><div class="carte plate">`; moisCourant = m; }
+    h += `<button class="liste-item" data-j="${e.type}:${e.x.id}"><div class="ic-rond">${ICONES_J[e.type]}</div><div class="corps"><div class="titre">${esc(e.titre)}</div><div class="detail">${dateFr(e.date, true)}${e.det ? ' · ' + esc(e.det) : ''}</div></div><div class="droite">${e.montant ? euros(e.montant) : ''}</div></button>`;
+  });
+  $('#j-liste').innerHTML = h + '</div>';
+}
+$('#j-filtre').addEventListener('click', ev => { const b = ev.target.closest('button'); if (!b) return; filtreJ = b.dataset.f; $$('#j-filtre button').forEach(x => x.classList.toggle('actif', x === b)); rendreJournal(); });
+
+function rendreCouts() {
+  const s = M.statistiques(D);
+  const annees = Object.keys(s.parAnnee).sort();
+  let h = `<div class="tuiles">
+    <div class="tuile"><div class="val">${euros(s.total12)}</div><div class="lib">Dépensé sur 12 mois</div></div>
+    <div class="tuile"><div class="val">${s.coutKm != null ? s.coutKm.toLocaleString('fr-FR', { maximumFractionDigits: 2 }) + ' €' : '—'}</div><div class="lib">Coût par km (12 mois)</div></div>
+    <div class="tuile"><div class="val">${s.consoMoy != null ? s.consoMoy.toLocaleString('fr-FR', { maximumFractionDigits: 1 }) + ' L' : '—'}</div><div class="lib">Conso moyenne /100 km</div></div>
+    <div class="tuile"><div class="val">${s.prixLitre.length ? (s.prixLitre.reduce((a, b) => a + b.prix, 0) / s.prixLitre.length).toLocaleString('fr-FR', { maximumFractionDigits: 3 }) + ' €' : '—'}</div><div class="lib">Prix moyen du litre</div></div>
+  </div>`;
+  h += `<h2>Dépenses par année</h2><div class="carte" style="position:relative">${annees.length ? grapheBarres(annees.map(a => ({ lib: a, val: s.parAnnee[a] }))) : '<div class="vide">Aucune dépense enregistrée.</div>'}<div class="bulle" id="bulle"></div></div>`;
+  const cats = Object.entries(s.parCategorie).sort((a, b) => b[1] - a[1]);
+  const tot = cats.reduce((x, c) => x + c[1], 0);
+  if (cats.length) h += `<h2>Par catégorie (total)</h2><div class="carte plate">${cats.map(([c, v]) => `<div class="liste-item" style="cursor:default"><div class="corps"><div class="titre">${esc(c)}</div><div class="barre"><i style="width:${v / tot * 100}%;background:var(--serie)"></i></div></div><div class="droite">${euros(v)}<br><span class="tres-muet">${Math.round(v / tot * 100)} %</span></div></div>`).join('')}</div>`;
+  if (s.conso.length) h += `<h2>Consommation (plein à plein)</h2><div class="carte plate">${s.conso.slice(-8).reverse().map(c => `<div class="liste-item" style="cursor:default"><div class="corps"><div class="titre">${c.l100.toLocaleString('fr-FR', { maximumFractionDigits: 1 })} L/100 km</div><div class="detail">${dateFr(c.date, true)} · ${nf(c.km)} km</div></div></div>`).join('')}</div>`;
+  else h += `<p class="tres-muet" style="margin:8px 4px">La consommation se calcule entre deux pleins complets avec le kilométrage.</p>`;
+  $('#c-contenu').innerHTML = h;
+  const g = $('#c-contenu svg.graph');
+  if (g) $$('rect.zone', g).forEach(r => {
+    const montrer = () => { const b = $('#bulle'); const box = r.getBoundingClientRect(), par = b.parentElement.getBoundingClientRect(); b.textContent = `${r.dataset.lib} : ${euros(+r.dataset.val)}`; b.style.left = (box.left - par.left + box.width / 2) + 'px'; b.style.top = (+r.dataset.y / 200 * g.getBoundingClientRect().height + 16) + 'px'; b.style.display = 'block'; };
+    r.addEventListener('pointerenter', montrer); r.addEventListener('click', montrer);
+    r.addEventListener('pointerleave', () => $('#bulle').style.display = 'none');
+  });
+}
+function grapheBarres(donnees) {
+  const W = 320, H = 200, g = 34, b = 22, haut = 12;
+  const max = Math.max(...donnees.map(d => d.val)) || 1;
+  const pas = Math.pow(10, Math.floor(Math.log10(max))); const nice = Math.ceil(max / pas) * pas;
+  const larg = (W - g) / donnees.length, lb = Math.min(36, larg * 0.6);
+  let s = `<svg class="graph" viewBox="0 0 ${W} ${H}" role="img" aria-label="Dépenses par année">`;
+  [0, .5, 1].forEach(f => { const y = H - b - f * (H - b - haut); s += `<line class="axe" x1="${g}" x2="${W}" y1="${y}" y2="${y}"/><text x="${g - 6}" y="${y + 4}" text-anchor="end">${nf(nice * f)}</text>`; });
+  donnees.forEach((d, i) => {
+    const hh = d.val / nice * (H - b - haut), x = g + i * larg + (larg - lb) / 2, y = H - b - hh;
+    const r = Math.min(4, hh);
+    s += `<path d="M${x},${H - b} V${y + r} Q${x},${y} ${x + r},${y} H${x + lb - r} Q${x + lb},${y} ${x + lb},${y + r} V${H - b} Z" fill="var(--serie)"/>`;
+    s += `<text x="${x + lb / 2}" y="${H - 6}" text-anchor="middle">${d.lib}</text>`;
+    s += `<rect class="zone" x="${g + i * larg}" y="0" width="${larg}" height="${H - b}" fill="transparent" data-lib="${d.lib}" data-val="${d.val}" data-y="${y}"/>`;
+  });
+  return s + '</svg>';
+}
+
+function rendrePlus() {
+  const v = D.vehicule;
+  const crit = P.CRITAIR[(P.MOTEURS[v.moteur] || {}).energie || 'essence'];
+  $('#p-contenu').innerHTML = `
+  <h2>Véhicule</h2><div class="carte plate">
+    <button class="liste-item" data-action="vehicule"><div class="ic-rond">🚗</div><div class="corps"><div class="titre">${esc(v.nom)}</div><div class="detail">${esc(v.modele)} · ${esc(moteurNom())} · ${esc(v.immatriculation || 'immatriculation ?')}</div></div><span class="chevron">›</span></button>
+    <button class="liste-item" data-action="admin"><div class="ic-rond">📋</div><div class="corps"><div class="titre">Administratif</div><div class="detail">CT ${D.admin.ctDernier ? 'le ' + dateFr(D.admin.ctDernier, true) : 'à renseigner'} · assurance ${D.admin.assuranceEcheance ? 'au ' + dateFr(D.admin.assuranceEcheance, true) : 'à renseigner'}</div></div><span class="chevron">›</span></button>
+    <button class="liste-item" data-action="plan"><div class="ic-rond">🗓️</div><div class="corps"><div class="titre">Plan d'entretien</div><div class="detail">Ajuster les intervalles à ton carnet</div></div><span class="chevron">›</span></button>
+    <button class="liste-item" data-action="points"><div class="ic-rond">🔎</div><div class="corps"><div class="titre">Points à surveiller</div><div class="detail">Problèmes connus de ta motorisation, Crit'Air ${crit.classe}</div></div><span class="chevron">›</span></button>
+  </div>
+  <h2>Sauvegarde et rappels</h2><div class="carte plate">
+    <button class="liste-item" data-action="cfg-sync"><div class="ic-rond">☁️</div><div class="corps"><div class="titre">Sauvegarde GitHub</div><div class="detail">${SYNC.token ? esc(SYNC.depot) + (SYNC.derniere ? ' · ' + new Date(SYNC.derniere).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' }) : '') : 'Non configurée'}</div></div><span class="chevron">›</span></button>
+    <button class="liste-item" data-action="cfg-ntfy"><div class="ic-rond">🔔</div><div class="corps"><div class="titre">Notifications ntfy</div><div class="detail">${D.reglages.ntfyTopic ? 'Sujet ' + esc(D.reglages.ntfyTopic) : 'Non configurées'}</div></div><span class="chevron">›</span></button>
+    <button class="liste-item" data-action="export"><div class="ic-rond">⬇️</div><div class="corps"><div class="titre">Exporter une copie</div><div class="detail">Fichier JSON à garder dans Fichiers ou iCloud</div></div><span class="chevron">›</span></button>
+    <button class="liste-item" data-action="import"><div class="ic-rond">⬆️</div><div class="corps"><div class="titre">Importer une copie</div><div class="detail">Restaurer depuis un fichier JSON</div></div><span class="chevron">›</span></button>
+  </div>
+  <h2>Divers</h2><div class="carte plate">
+    <button class="liste-item" data-action="sources"><div class="ic-rond">📚</div><div class="corps"><div class="titre">Sources et avertissement</div><div class="detail">D'où viennent les intervalles</div></div><span class="chevron">›</span></button>
+    <button class="liste-item" data-action="reinit"><div class="ic-rond">🗑️</div><div class="corps"><div class="titre">Réinitialiser cet appareil</div><div class="detail">Efface les données locales (pas la sauvegarde GitHub)</div></div><span class="chevron">›</span></button>
+  </div>
+  <p class="tres-muet" style="text-align:center;margin-top:18px">Carnet 206+ · version 1.0</p>`;
+}
+
+// ---------- libellés ----------
+function libelleOps(ids) {
+  const ops = M.operationsActives(D);
+  return (ids || []).map(id => (ops.find(o => o.id === id) || {}).nom || id).join(', ') || 'Intervention';
+}
+
+// ---------- formulaires ----------
+function formKm() {
+  const km = M.kmEstime(D);
+  ouvrir(`${tete('Kilométrage')}
+    <label class="champ"><span>Kilométrage au compteur</span><input id="f-km" type="number" inputmode="numeric" placeholder="${km != null ? nf(km).replace(/\s/g, '') : 'ex. 121500'}"></label>
+    <label class="champ"><span>Date</span><input id="f-date" type="date" value="${isoAuj()}"></label>
+    ${km != null ? `<p class="aide">Estimation actuelle : ${nf(km)} km</p>` : ''}
+    <button class="btn" id="f-ok">Enregistrer</button>`, f => {
+    setTimeout(() => $('#f-km', f).focus(), 300);
+    $('#f-ok', f).onclick = () => {
+      const v = +$('#f-km', f).value, d = $('#f-date', f).value;
+      if (!v || !d) return toast('Indique le kilométrage');
+      const der = M.dernierPoint(D);
+      if (der && v < der.km && d >= der.date) return toast(`Valeur inférieure au dernier relevé (${nf(der.km)} km)`);
+      modifier(x => x.releves.push({ id: M.nouvelId(), date: d, km: v }), 'Kilométrage enregistré');
+      fermer();
+    };
+  });
+}
+
+// ---------- Passage au garage : une ligne par travail, comme sur la facture ----------
+// Raccourcis : uniquement les pièces systématiquement remplacées.
+const RAPIDES = {
+  'Révision': ['vidange'],
+  'Distribution': ['distribution'],
+  'Contrôle technique': ['controle_technique'],
+  '4 pneus neufs': ['pneus_avant', 'pneus_arriere']
+};
+// Révision : liste à cocher, facture sous les yeux. Rien de coché = seule la vidange compte.
+const REV_PIECES = ['filtre_air', 'filtre_habitacle', 'bougies', 'filtre_gasoil', 'liquide_frein', 'liquide_refroidissement', 'courroie_accessoires', 'essuie_glaces', 'clim'];
+const REV_CONTROLES = ['niveaux', 'freins_controle', 'pneus', 'train_avant', 'train_arriere', 'batterie', 'amortisseurs'];
+function lignesDe(x) {
+  if (x.lignes && x.lignes.length) return x.lignes.map(l => Object.assign({}, l));
+  const ops = M.operationsActives(D), l = [];
+  const ctl = x.type === 'reparation' ? (P.REPARATIONS.find(c => c.id === x.categorie) || {}).controle : null;
+  if (x.type === 'reparation') l.push({ libelle: x.libelle || 'Réparation', categorie: x.categorie || 'autre', ops: (x.operations || []).filter(id => id !== ctl) });
+  else (x.operations || []).forEach(id => { const o = ops.find(q => q.id === id); if (o) l.push({ libelle: o.nom, categorie: 'carnet', ops: [id] }); });
+  if (!l.length && x.libelle) l.push({ libelle: x.libelle, categorie: 'autre', ops: [] });
+  return l;
+}
+function formIntervention(ex, opsPre, modeRevision) {
+  const ops = M.operationsActives(D), moteur = D.vehicule.moteur || 'tu3';
+  const nomOp = id => (ops.find(o => o.id === id) || {}).nom;
+  const actif = id => ops.some(o => o.id === id);
+  const x = ex || { date: isoAuj(), km: '', operations: opsPre || [], libelle: '', garage: '', moiMeme: false, cout: '', notes: '' };
+  let lignes = lignesDe(x);
+  let parcours = null;           // catégorie parcourue quand la recherche est vide
+  const ctlCoches = new Set(ex ? (x.operations || []).filter(id => P.REPARATIONS.some(c => c.controle === id)) : []);
+  const nomCat = id => id === 'carnet' ? "Carnet d'entretien" : nomCategorie(id);
+  ouvrir(`${tete(ex ? 'Modifier le passage' : modeRevision ? 'Révision' : 'Passage au garage')}
+    <label class="champ"><span>Qu'est-ce qui a été fait ?</span><input id="g-q" placeholder="Tape un mot : vidange, rotule, frein…" autocomplete="off" autocorrect="off"></label>
+    <p class="aide">Une ligne par travail, comme sur la facture. L'appli reconnaît le travail et met le carnet à jour.</p>
+    <div id="g-aide"></div>
+    <div id="g-rev"></div>
+    <div id="g-lignes"></div>
+    <div id="g-ctl"></div>
+    <div class="rangee"><label class="champ"><span>Date</span><input id="i-date" type="date" value="${x.date}"></label>
+    <label class="champ"><span>Kilométrage</span><input id="i-km" type="number" inputmode="numeric" value="${x.km ?? ''}" placeholder="au compteur"></label></div>
+    <label class="interrupteur"><span>Fait moi-même</span><input id="i-moi" type="checkbox" ${x.moiMeme ? 'checked' : ''}></label>
+    <label class="champ" id="i-garage-c"><span>Garage</span><input id="i-garage" value="${esc(x.garage)}" placeholder="Nom du garage"></label>
+    <label class="champ"><span>Coût total (€)</span><input id="i-cout" type="number" inputmode="decimal" step="0.01" value="${x.cout ?? ''}"></label>
+    <label class="champ"><span>Notes</span><textarea id="i-notes" placeholder="Remarques du garagiste, pièces…">${esc(x.notes)}</textarea></label>
+    <button class="btn" id="i-ok">Enregistrer</button>
+    ${ex ? '<div style="height:10px"></div><button class="btn danger" id="i-suppr">Supprimer</button>' : ''}`, f => {
+    const q = $('#g-q', f);
+    const ajouter = l => {
+      if (lignes.some(k => k.libelle === l.libelle)) return toast('Déjà dans la liste');
+      lignes.push(l); q.value = ''; parcours = null; dessiner();
+    };
+    const ligneDepuis = e => ({ libelle: e.nom, categorie: e.categorie, ops: e.ops.filter(actif) });
+    // texte libre : plusieurs travaux séparés par + , ; ou retour à la ligne
+    // les morceaux qui désignent le même travail (« vidange + filtre à huile ») restent sur une seule ligne
+    const ajouterTexte = t => {
+      const groupes = [];
+      t.split(/[+;\n]|,(?!\d)/).map(v => v.trim()).filter(Boolean).forEach(v => {
+        const r = P.reconnaitre(v, moteur)[0];
+        const l = r && r.phrase ? { libelle: v, categorie: r.e.categorie, ops: r.e.ops.filter(actif), cle: r.e.nom }
+          : { libelle: v, categorie: (r && r.e.categorie !== 'carnet' ? r.e.categorie : P.devinerCategorie(v)) || 'autre', ops: [], cle: 'libre:' + v };
+        const g = groupes.find(k => k.cle === l.cle);
+        if (g) g.libelle += ' + ' + v; else groupes.push(l);
+      });
+      groupes.forEach(g => { delete g.cle; ajouter(g); });
+    };
+    function dessiner() {
+      const t = q.value.trim();
+      let h = '';
+      if (t) {
+        const tous = P.reconnaitre(t, moteur), seuil = tous.length ? Math.max(1, tous[0].score * 0.35) : 0;
+        const res = tous.filter(r => r.score >= seuil).slice(0, 5);
+        const top = res[0];
+        const devin = top && top.phrase ? `reconnu : ${top.e.nom}` : `classé dans : ${nomCat((top && top.e.categorie !== 'carnet' ? top.e.categorie : P.devinerCategorie(t)) || 'autre')}`;
+        h = `<div class="carte plate">${res.map((r, i) => `<button class="liste-item" data-r="${i}" style="padding:10px 14px"><div class="corps"><div class="titre" style="font-size:15px">${esc(r.e.nom)}</div><div class="detail">${esc(r.e.catNom)}${r.e.ops.filter(actif).length ? ' · met le carnet à jour' : ''}</div></div><span class="chevron">+</span></button>`).join('')}
+          <button class="liste-item" data-libre style="padding:10px 14px"><div class="corps"><div class="titre" style="font-size:15px">Ajouter « ${esc(t)} »</div><div class="detail">Tel quel, ${esc(devin)}</div></div><span class="chevron">+</span></button></div>`;
+        f._res = res;
+      } else if (parcours) {
+        const c = P.REPARATIONS.find(k => k.id === parcours);
+        h = `<div class="carte plate"><button class="liste-item" data-retour style="padding:10px 14px"><div class="corps"><div class="titre" style="font-size:15px">‹ ${esc(c.nom)}</div></div></button>${c.liste.map(([nom, exa], i) => `<button class="liste-item" data-p="${i}" style="padding:10px 14px"><div class="corps"><div class="titre" style="font-size:15px">${esc(nom)}</div></div><span class="chevron">+</span></button>`).join('')}</div>`;
+      } else {
+        h = `<div class="champ"><span>Raccourcis</span></div><div class="puces">${Object.keys(RAPIDES).filter(k => RAPIDES[k].some(actif)).map(k => `<button data-rap="${k}">${k}</button>`).join('')}</div>
+          <div class="champ"><span>Ou choisis par partie de la voiture</span></div><div class="puces">${P.REPARATIONS.filter(c => c.liste.length).map(c => `<button data-cat="${c.id}">${esc(c.nom)}</button>`).join('')}</div>`;
+      }
+      $('#g-aide', f).innerHTML = h;
+      // bloc révision : apparaît dès qu'une vidange figure dans le passage
+      const aOp = id => lignes.some(l => l.ops.includes(id));
+      if (aOp('vidange')) {
+        const cases = l => l.filter(actif).map(id => `<label><input type="checkbox" data-rev="${id}" ${aOp(id) ? 'checked' : ''}>${ICONES[(ops.find(o => o.id === id) || {}).icone] || ''} ${esc(nomOp(id))}</label>`).join('');
+        $('#g-rev', f).innerHTML = `<div class="carte" style="padding:12px 14px"><b>Révision : qu'est-ce qui a été fait en plus ?</b>
+          <p class="aide" style="margin:4px 0 10px">Facultatif. Vidange et filtre à huile sont déjà comptés. Si tu ne sais pas, ne coche rien : tu pourras compléter plus tard depuis l'Historique.</p>
+          <div class="champ"><span>Pièces ou liquides remplacés</span></div><div class="ops-coches" style="max-height:none">${cases(REV_PIECES)}</div>
+          <div class="champ"><span>Contrôles écrits sur la facture</span></div><div class="ops-coches" style="max-height:none;margin-bottom:0">${cases(REV_CONTROLES)}</div></div>`;
+        $$('[data-rev]', f).forEach(i => i.onchange = () => {
+          const id = i.dataset.rev;
+          if (i.checked) { if (!aOp(id)) lignes.push({ libelle: nomOp(id), categorie: 'carnet', ops: [id] }); }
+          else lignes = lignes.filter(l => !(l.ops.length === 1 && l.ops[0] === id));
+          dessiner();
+        });
+      } else $('#g-rev', f).innerHTML = '';
+      $('#g-lignes', f).innerHTML = lignes.length ? `<div class="champ"><span>Travaux enregistrés (${lignes.length})</span></div><div class="carte plate">${lignes.map((l, i) => `<div class="liste-item" style="cursor:default;padding:10px 14px"><div class="corps"><div class="titre" style="font-size:15px">${esc(l.libelle)}</div><div class="detail">${esc(nomCat(l.categorie))}${l.ops.length ? ' · repart de zéro : ' + esc(l.ops.map(nomOp).join(', ')) : ''}</div></div><button class="fermer" data-suppr="${i}" aria-label="Retirer">✕</button></div>`).join('')}</div>` : '';
+      // contrôles éventuels : jamais déduits, seulement si la facture les mentionne
+      const ctls = Array.from(new Set(lignes.map(l => (P.REPARATIONS.find(c => c.id === l.categorie) || {}).controle).filter(c => c && actif(c) && !lignes.some(l => l.ops.includes(c)))));
+      $('#g-ctl', f).innerHTML = ctls.map(c => `<label class="interrupteur"><span>La facture mentionne aussi : ${esc(nomOp(c))}<br><span class="tres-muet">À cocher seulement si c'est écrit. Sinon ce contrôle reste à faire.</span></span><input type="checkbox" data-ctl="${c}" ${ctlCoches.has(c) ? 'checked' : ''}></label>`).join('');
+      $$('[data-ctl]', f).forEach(i => i.onchange = () => i.checked ? ctlCoches.add(i.dataset.ctl) : ctlCoches.delete(i.dataset.ctl));
+      $$('[data-r]', f).forEach(b => b.onclick = () => ajouter(ligneDepuis(f._res[+b.dataset.r].e)));
+      $$('[data-libre]', f).forEach(b => b.onclick = () => ajouterTexte(q.value));
+      $$('[data-rap]', f).forEach(b => b.onclick = () => RAPIDES[b.dataset.rap].filter(actif).forEach(id => ajouter({ libelle: id === 'vidange' ? 'Révision (vidange et filtre à huile)' : nomOp(id), categorie: 'carnet', ops: [id] })));
+      $$('[data-cat]', f).forEach(b => b.onclick = () => { parcours = b.dataset.cat; dessiner(); });
+      $$('[data-retour]', f).forEach(b => b.onclick = () => { parcours = null; dessiner(); });
+      $$('[data-p]', f).forEach(b => b.onclick = () => { const [nom, exa] = P.REPARATIONS.find(k => k.id === parcours).liste[+b.dataset.p]; ajouter({ libelle: nom, categorie: parcours, ops: (exa || []).filter(actif) }); });
+      $$('[data-suppr]', f).forEach(b => b.onclick = () => { lignes.splice(+b.dataset.suppr, 1); dessiner(); });
+    }
+    q.oninput = dessiner;
+    q.onkeydown = ev => { if (ev.key === 'Enter' && q.value.trim()) { ev.preventDefault(); ajouterTexte(q.value); } };
+    dessiner();
+    const maj = () => $('#i-garage-c', f).style.display = $('#i-moi', f).checked ? 'none' : 'block';
+    $('#i-moi', f).onchange = maj; maj();
+    $('#i-ok', f).onclick = () => {
+      if (q.value.trim()) ajouterTexte(q.value);
+      if (!lignes.length) return toast('Ajoute au moins un travail');
+      const date = $('#i-date', f).value; if (!date) return toast('Indique la date');
+      const operations = Array.from(new Set(lignes.flatMap(l => l.ops).concat([...ctlCoches].filter(c => lignes.some(l => (P.REPARATIONS.find(k => k.id === l.categorie) || {}).controle === c)))));
+      const rep = lignes.filter(l => l.categorie !== 'carnet');
+      const o = { id: ex ? ex.id : M.nouvelId(), type: rep.length ? 'reparation' : 'entretien', categorie: rep.length ? rep[0].categorie : '', lignes,
+        libelle: lignes.map(l => l.libelle).join(', '), operations, date, km: $('#i-km', f).value === '' ? '' : +$('#i-km', f).value,
+        moiMeme: $('#i-moi', f).checked, garage: $('#i-garage', f).value.trim(), cout: $('#i-cout', f).value === '' ? '' : +$('#i-cout', f).value, notes: $('#i-notes', f).value.trim() };
+      if (operations.includes('controle_technique')) D.admin.ctDernier = D.admin.ctDernier && D.admin.ctDernier > date ? D.admin.ctDernier : date;
+      modifier(d => { if (ex) d.interventions = d.interventions.map(i => i.id === ex.id ? o : i); else d.interventions.push(o); }, 'Passage enregistré, carnet mis à jour');
+      fermer();
+    };
+    if (ex) $('#i-suppr', f).onclick = () => supprimer('interventions', ex.id);
+    if (modeRevision && !lignes.some(l => l.ops.includes('vidange'))) { lignes.push({ libelle: 'Révision (vidange et filtre à huile)', categorie: 'carnet', ops: ['vidange'] }); dessiner(); }
+    if (!ex && !opsPre && !modeRevision) setTimeout(() => q.focus(), 350);
+  });
+}
+
+function formPlein(ex) {
+  const x = ex || { date: isoAuj(), km: '', litres: '', montant: '', complet: true };
+  ouvrir(`${tete(ex ? 'Modifier le plein' : 'Nouveau plein')}
+    <div class="rangee"><label class="champ"><span>Date</span><input id="p-date" type="date" value="${x.date}"></label>
+    <label class="champ"><span>Kilométrage</span><input id="p-km" type="number" inputmode="numeric" value="${x.km ?? ''}"></label></div>
+    <div class="rangee"><label class="champ"><span>Litres</span><input id="p-l" type="number" inputmode="decimal" step="0.01" value="${x.litres ?? ''}"></label>
+    <label class="champ"><span>Montant (€)</span><input id="p-m" type="number" inputmode="decimal" step="0.01" value="${x.montant ?? ''}"></label></div>
+    <p class="aide" id="p-prix"></p>
+    <label class="interrupteur"><span>Plein complet<br><span class="tres-muet">Nécessaire pour calculer la consommation</span></span><input id="p-c" type="checkbox" ${x.complet !== false ? 'checked' : ''}></label>
+    <button class="btn" id="p-ok">Enregistrer</button>
+    ${ex ? '<div style="height:10px"></div><button class="btn danger" id="p-suppr">Supprimer</button>' : ''}`, f => {
+    const prix = () => { const l = +$('#p-l', f).value, m = +$('#p-m', f).value; $('#p-prix', f).textContent = l > 0 && m > 0 ? `Soit ${(m / l).toLocaleString('fr-FR', { maximumFractionDigits: 3 })} €/L` : ''; };
+    $('#p-l', f).oninput = prix; $('#p-m', f).oninput = prix; prix();
+    $('#p-ok', f).onclick = () => {
+      const o = { id: ex ? ex.id : M.nouvelId(), date: $('#p-date', f).value, km: $('#p-km', f).value === '' ? '' : +$('#p-km', f).value, litres: +$('#p-l', f).value || '', montant: +$('#p-m', f).value || '', complet: $('#p-c', f).checked };
+      if (!o.date || (!o.litres && !o.montant)) return toast('Indique au moins les litres ou le montant');
+      modifier(d => { if (ex) d.pleins = d.pleins.map(i => i.id === ex.id ? o : i); else d.pleins.push(o); }, 'Plein enregistré');
+      fermer();
+    };
+    if (ex) $('#p-suppr', f).onclick = () => supprimer('pleins', ex.id);
+  });
+}
+
+const CATEGORIES = ['Assurance', 'Contrôle technique', 'Pièces', 'Réparation', 'Pneus', 'Péage et parking', 'Lavage', 'Carte grise et vignette', 'Autre'];
+function formDepense(ex) {
+  const x = ex || { date: isoAuj(), categorie: 'Assurance', libelle: '', montant: '' };
+  ouvrir(`${tete(ex ? 'Modifier la dépense' : 'Nouvelle dépense')}
+    <label class="champ"><span>Catégorie</span><select id="d-cat">${CATEGORIES.map(c => `<option ${c === x.categorie ? 'selected' : ''}>${c}</option>`).join('')}</select></label>
+    <label class="champ"><span>Libellé</span><input id="d-lib" value="${esc(x.libelle)}" placeholder="ex. Assurance annuelle"></label>
+    <div class="rangee"><label class="champ"><span>Date</span><input id="d-date" type="date" value="${x.date}"></label>
+    <label class="champ"><span>Montant (€)</span><input id="d-m" type="number" inputmode="decimal" step="0.01" value="${x.montant ?? ''}"></label></div>
+    <p class="aide">Les coûts d'entretien se saisissent dans l'intervention elle-même, et le carburant dans un plein.</p>
+    <button class="btn" id="d-ok">Enregistrer</button>
+    ${ex ? '<div style="height:10px"></div><button class="btn danger" id="d-suppr">Supprimer</button>' : ''}`, f => {
+    $('#d-ok', f).onclick = () => {
+      const o = { id: ex ? ex.id : M.nouvelId(), date: $('#d-date', f).value, categorie: $('#d-cat', f).value, libelle: $('#d-lib', f).value.trim(), montant: +$('#d-m', f).value || '' };
+      if (!o.date || !o.montant) return toast('Indique la date et le montant');
+      modifier(d => { if (ex) d.depenses = d.depenses.map(i => i.id === ex.id ? o : i); else d.depenses.push(o); }, 'Dépense enregistrée');
+      fermer();
+    };
+    if (ex) $('#d-suppr', f).onclick = () => supprimer('depenses', ex.id);
+  });
+}
+
+function formReleve(ex) {
+  ouvrir(`${tete('Relevé de kilométrage')}
+    <div class="rangee"><label class="champ"><span>Date</span><input id="r-date" type="date" value="${ex.date}"></label>
+    <label class="champ"><span>Kilométrage</span><input id="r-km" type="number" inputmode="numeric" value="${ex.km}"></label></div>
+    <button class="btn" id="r-ok">Enregistrer</button><div style="height:10px"></div><button class="btn danger" id="r-suppr">Supprimer</button>`, f => {
+    $('#r-ok', f).onclick = () => { const o = { id: ex.id, date: $('#r-date', f).value, km: +$('#r-km', f).value }; modifier(d => d.releves = d.releves.map(i => i.id === ex.id ? o : i), 'Relevé modifié'); fermer(); };
+    $('#r-suppr', f).onclick = () => supprimer('releves', ex.id);
+  });
+}
+
+function supprimer(coll, id) {
+  if (!confirmer()) return;
+  modifier(d => { d[coll] = d[coll].filter(i => i.id !== id); d.supprimes.push(id); }, 'Supprimé');
+  fermer();
+}
+function confirmer() { return window.confirm('Supprimer cette entrée ?'); }
+
+function choixAjout() {
+  ouvrir(`${tete('Ajouter')}
+    <div class="carte plate">
+      <button class="liste-item" data-ajout="revision"><div class="ic-rond">🛢️</div><div class="corps"><div class="titre">Révision</div><div class="detail">Vidange, puis une liste à cocher avec la facture</div></div><span class="chevron">›</span></button>
+      <button class="liste-item" data-ajout="intervention"><div class="ic-rond">🔧</div><div class="corps"><div class="titre">Autre passage au garage</div><div class="detail">Réparation, pneus, CT… une ligne par travail</div></div><span class="chevron">›</span></button>
+      <button class="liste-item" data-ajout="km"><div class="ic-rond">📍</div><div class="corps"><div class="titre">Kilométrage</div><div class="detail">Noter le compteur</div></div><span class="chevron">›</span></button>
+      <button class="liste-item" data-ajout="plein"><div class="ic-rond">⛽</div><div class="corps"><div class="titre">Plein de carburant</div><div class="detail">Litres, montant, kilométrage</div></div><span class="chevron">›</span></button>
+      <button class="liste-item" data-ajout="depense"><div class="ic-rond">💶</div><div class="corps"><div class="titre">Autre dépense</div><div class="detail">Assurance, péage, lavage…</div></div><span class="chevron">›</span></button>
+    </div>`, f => $$('[data-ajout]', f).forEach(b => b.onclick = () => ({ km: formKm, revision: () => formIntervention(null, null, true), intervention: () => formIntervention(), plein: () => formPlein(), depense: () => formDepense() })[b.dataset.ajout]()));
+}
+
+function detailOp(id) {
+  const op = M.operationsActives(D).find(o => o.id === id); if (!op) return;
+  const e = M.echeance(D, op);
+  const hist = D.interventions.filter(i => (i.operations || []).includes(id)).sort((a, b) => b.date.localeCompare(a.date));
+  const src = { constructeur: 'Constructeur', conseil: 'Conseil', admin: 'Administratif' }[op.source];
+  const intervalle = [op.km ? `${nf(op.km)} km` : null, op.mois ? (op.mois % 12 === 0 ? `${op.mois / 12} an${op.mois > 12 ? 's' : ''}` : `${op.mois} mois`) : null].filter(Boolean).join(' ou ');
+  ouvrir(`${tete(esc(op.nom))}
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px">${pastille(e.statut)}<span class="badge-src">${src}</span></div>
+    <div class="carte">
+      <div class="muet">Intervalle</div><div style="font-weight:600;margin-bottom:10px">Tous les ${intervalle}${op.km && op.mois ? ', au premier atteint' : ''}</div>
+      <div class="muet">Dernière fois</div><div style="font-weight:600;margin-bottom:10px">${e.dernier ? dateFr(e.dernier.date) + (e.dernier.km != null ? ` · ${nf(e.dernier.km)} km` : '') : 'Inconnue'}</div>
+      <div class="muet">Prochaine échéance</div><div style="font-weight:600">${e.date ? `${dateFr(e.date)} (${dans(e.joursRestants)})` : '—'}${e.km ? `<br><span class="muet">ou ${nf(e.km)} km${e.kmRestants != null ? ` (${e.kmRestants >= 0 ? 'encore ' + nf(e.kmRestants) : 'dépassé de ' + nf(-e.kmRestants)} km)` : ''}</span>` : ''}</div>
+      ${e.critere && e.date ? `<p class="tres-muet" style="margin:8px 0 0">${e.critere === 'km' ? 'Date estimée à partir de ton rythme de roulage.' : 'Avec ton faible kilométrage, c\'est la limite de temps qui arrive en premier.'}</p>` : ''}
+    </div>
+    <p class="muet">${esc(op.info)}</p>
+    <button class="btn" id="o-fait">C'est fait</button><div style="height:10px"></div>
+    ${op.source === 'admin' ? '' : `<div class="rangee"><button class="btn second" id="o-date">Date connue</button><button class="btn discret" id="o-inconnu">Je ne sais pas</button></div><div style="height:10px"></div>`}
+    <button class="btn discret" id="o-int">Modifier l'intervalle</button>
+    ${hist.length ? `<h2>Historique</h2><div class="carte plate">${hist.map(i => `<button class="liste-item" data-j="intervention:${i.id}"><div class="corps"><div class="titre">${dateFr(i.date, true)}</div><div class="detail">${[i.km ? nf(i.km) + ' km' : null, i.moiMeme ? 'Moi-même' : i.garage].filter(Boolean).join(' · ')}</div></div><div class="droite">${+i.cout ? euros(+i.cout) : ''}</div></button>`).join('')}</div>` : ''}`, f => {
+    $('#o-fait', f).onclick = () => op.id === 'controle_technique' || op.id === 'assurance' ? formAdminFait(op) : formIntervention(null, [op.id]);
+    if ($('#o-date', f)) $('#o-date', f).onclick = () => formEtatInitial(op);
+    if ($('#o-inconnu', f)) $('#o-inconnu', f).onclick = () => {
+      // planifie un contrôle dans 30 jours
+      const base = M.ajouterMois(M.aujourdhui(), -(op.mois || 12));
+      const d = M.versIso(new Date(base.getTime() + 30 * 86400000));
+      modifier(x => x.etatInitial[op.id] = { date: d, km: null, estime: true }, 'Contrôle planifié dans un mois');
+      fermer();
+    };
+    $('#o-int', f).onclick = () => formIntervalle(op);
+    $$('[data-j]', f).forEach(b => b.onclick = () => ouvrirEntree(b.dataset.j));
+  });
+}
+
+function formAdminFait(op) {
+  const ct = op.id === 'controle_technique';
+  ouvrir(`${tete(ct ? 'Contrôle technique passé' : 'Assurance renouvelée')}
+    <label class="champ"><span>${ct ? 'Date du contrôle' : 'Nouvelle date d\'échéance'}</span><input id="a-d" type="date" value="${ct ? isoAuj() : M.versIso(M.ajouterMois(M.versDate(D.admin.assuranceEcheance || isoAuj()), 12))}"></label>
+    ${ct ? '<label class="champ"><span>Kilométrage</span><input id="a-km" type="number" inputmode="numeric"></label><label class="champ"><span>Centre</span><input id="a-g"></label>' : '<label class="champ"><span>Assureur</span><input id="a-g" value="' + esc(D.admin.assureur) + '"></label>'}
+    <label class="champ"><span>${ct ? 'Coût' : 'Prime annuelle'} (€)</span><input id="a-c" type="number" inputmode="decimal" step="0.01"></label>
+    <button class="btn" id="a-ok">Enregistrer</button>`, f => {
+    $('#a-ok', f).onclick = () => {
+      const d = $('#a-d', f).value, c = +$('#a-c', f).value || '';
+      if (!d) return toast('Indique la date');
+      modifier(x => {
+        if (ct) {
+          x.admin.ctDernier = d;
+          x.interventions.push({ id: M.nouvelId(), date: d, km: $('#a-km', f).value === '' ? '' : +$('#a-km', f).value, operations: ['controle_technique'], libelle: 'Contrôle technique', garage: $('#a-g', f).value.trim(), moiMeme: false, cout: c, notes: '' });
+        } else {
+          x.admin.assuranceEcheance = d; x.admin.assureur = $('#a-g', f).value.trim();
+          if (c) x.depenses.push({ id: M.nouvelId(), date: isoAuj(), categorie: 'Assurance', libelle: 'Assurance ' + (x.admin.assureur || ''), montant: c });
+        }
+      }, 'Enregistré');
+      fermer();
+    };
+  });
+}
+
+function formEtatInitial(op) {
+  const e = D.etatInitial[op.id] || {};
+  ouvrir(`${tete(esc(op.nom))}
+    <p class="muet">Indique la dernière fois que c'était fait, d'après ton carnet ou tes factures.</p>
+    <div class="rangee"><label class="champ"><span>Date</span><input id="s-d" type="date" value="${e.date || ''}"></label>
+    <label class="champ"><span>Kilométrage</span><input id="s-km" type="number" inputmode="numeric" value="${e.km ?? ''}"></label></div>
+    <p class="aide">Si tu ne connais que l'année, mets le 1er janvier de cette année.</p>
+    <button class="btn" id="s-ok">Enregistrer</button>`, f => {
+    $('#s-ok', f).onclick = () => {
+      const d = $('#s-d', f).value; if (!d) return toast('Indique au moins la date');
+      modifier(x => x.etatInitial[op.id] = { date: d, km: $('#s-km', f).value === '' ? null : +$('#s-km', f).value }, 'Enregistré');
+      fermer();
+    };
+  });
+}
+
+function formIntervalle(op) {
+  const base = P.operationsPour(D.vehicule.moteur).find(o => o.id === op.id);
+  ouvrir(`${tete('Intervalle')}
+    <p class="muet">${esc(op.nom)} · valeur par défaut : ${base.km ? nf(base.km) + ' km' : 'pas de km'}${base.mois ? ' / ' + base.mois + ' mois' : ''}</p>
+    <div class="rangee"><label class="champ"><span>Kilomètres (vide = aucun)</span><input id="n-km" type="number" inputmode="numeric" value="${op.km ?? ''}"></label>
+    <label class="champ"><span>Mois (vide = aucun)</span><input id="n-m" type="number" inputmode="numeric" value="${op.mois ?? ''}"></label></div>
+    <label class="interrupteur"><span>Suivre cette opération</span><input id="n-a" type="checkbox" checked></label>
+    <button class="btn" id="n-ok">Enregistrer</button><div style="height:10px"></div><button class="btn discret" id="n-def">Revenir aux valeurs par défaut</button>`, f => {
+    $('#n-ok', f).onclick = () => {
+      const km = $('#n-km', f).value === '' ? null : +$('#n-km', f).value, mo = $('#n-m', f).value === '' ? null : +$('#n-m', f).value;
+      if (!km && !mo) return toast('Il faut au moins un intervalle');
+      modifier(x => x.plan[op.id] = { km, mois: mo, actif: $('#n-a', f).checked }, 'Intervalle modifié');
+      fermer();
+    };
+    $('#n-def', f).onclick = () => { modifier(x => delete x.plan[op.id], 'Valeurs par défaut rétablies'); fermer(); };
+  });
+}
+
+function ouvrirEntree(cle) {
+  const [t, id] = cle.split(':');
+  const coll = { intervention: 'interventions', plein: 'pleins', depense: 'depenses', releve: 'releves' }[t];
+  const x = D[coll].find(i => i.id === id); if (!x) return;
+  ({ intervention: formIntervention, plein: formPlein, depense: formDepense, releve: formReleve })[t](x);
+}
+
+// ---------- réglages ----------
+function champsVehicule(v) {
+  return `<label class="champ"><span>Nom affiché</span><input id="v-nom" value="${esc(v.nom)}"></label>
+    <div class="champ"><span>Motorisation</span></div>
+    <div class="choix">${Object.values(P.MOTEURS).map(m => `<label><input type="radio" name="v-mot" value="${m.id}" ${v.moteur === m.id ? 'checked' : ''}><div><b>${m.nom}</b><div class="tres-muet">Moteur ${m.code}</div></div></label>`).join('')}</div>
+    <p class="aide">Sur la carte grise : P.3 donne l'énergie (ES essence, GO diesel), P.1 la cylindrée (1124 ou 1360 cm³), P.2 la puissance en kW (44 kW = 60 ch, 54 kW = 75 ch, 50 kW = 68-70 ch).</p>
+    <div class="rangee"><label class="champ"><span>1re mise en circulation (B)</span><input id="v-mec" type="date" value="${v.miseEnCirculation || ''}"></label>
+    <label class="champ"><span>Immatriculation</span><input id="v-imm" value="${esc(v.immatriculation)}" autocapitalize="characters"></label></div>
+    <div class="rangee"><label class="champ"><span>Couleur</span><input id="v-coul" value="${esc(v.couleur)}"></label>
+    <label class="champ"><span>Boîte</span><select id="v-boite"><option value="manuelle" ${v.boite === 'manuelle' ? 'selected' : ''}>Manuelle</option><option value="pilotee" ${v.boite === 'pilotee' ? 'selected' : ''}>Pilotée / auto</option></select></label></div>`;
+}
+function lireVehicule(f, v) {
+  const m = $('input[name="v-mot"]:checked', f);
+  return Object.assign({}, v, { nom: $('#v-nom', f).value.trim() || 'Ma 206+', moteur: m ? m.value : v.moteur, miseEnCirculation: $('#v-mec', f).value || null,
+    immatriculation: $('#v-imm', f).value.trim().toUpperCase(), couleur: $('#v-coul', f).value.trim(), boite: $('#v-boite', f).value,
+    annee: $('#v-mec', f).value ? +$('#v-mec', f).value.slice(0, 4) : v.annee });
+}
+function formVehicule() {
+  ouvrir(`${tete('Véhicule')}${champsVehicule(D.vehicule)}
+    <label class="champ"><span>Kilomètres par an (estimation de départ)</span><input id="v-kman" type="number" inputmode="numeric" value="${D.vehicule.kmAn}"></label>
+    <p class="aide">Utilisé tant que l'historique de relevés est court ; ensuite, l'appli se cale sur ton rythme réel.</p>
+    <button class="btn" id="v-ok">Enregistrer</button>`, f => {
+    $('#v-ok', f).onclick = () => { modifier(x => { x.vehicule = lireVehicule(f, x.vehicule); x.vehicule.kmAn = +$('#v-kman', f).value || 5000; }, 'Véhicule mis à jour'); fermer(); };
+  });
+}
+function formAdmin() {
+  ouvrir(`${tete('Administratif')}
+    <label class="champ"><span>Date du dernier contrôle technique</span><input id="ad-ct" type="date" value="${D.admin.ctDernier || ''}"></label>
+    <label class="champ"><span>Prochaine échéance d'assurance</span><input id="ad-as" type="date" value="${D.admin.assuranceEcheance || ''}"></label>
+    <label class="champ"><span>Assureur</span><input id="ad-nom" value="${esc(D.admin.assureur)}"></label>
+    <button class="btn" id="ad-ok">Enregistrer</button>`, f => {
+    $('#ad-ok', f).onclick = () => { modifier(x => { x.admin.ctDernier = $('#ad-ct', f).value || null; x.admin.assuranceEcheance = $('#ad-as', f).value || null; x.admin.assureur = $('#ad-nom', f).value.trim(); }, 'Enregistré'); fermer(); };
+  });
+}
+function vuePlan() {
+  const ops = P.operationsPour(D.vehicule.moteur);
+  ouvrir(`${tete("Plan d'entretien")}
+    <p class="muet">Touche une ligne pour l'ajuster à ton carnet. Les valeurs modifiées sont marquées d'un point bleu.</p>
+    <div class="carte plate">${ops.map(o => { const p = D.plan[o.id]; const v = Object.assign({}, o, p || {}); return `<button class="liste-item" data-op="${o.id}"><div class="corps"><div class="titre">${esc(o.nom)}${p ? ' <span style="color:var(--accent)">●</span>' : ''}${v.actif === false ? ' <span class="tres-muet">(désactivé)</span>' : ''}</div><div class="detail">${[v.km ? nf(v.km) + ' km' : null, v.mois ? v.mois + ' mois' : null].filter(Boolean).join(' / ')} · ${{ constructeur: 'constructeur', conseil: 'conseil', admin: 'administratif' }[o.source]}</div></div><span class="chevron">›</span></button>`; }).join('')}</div>`, f => {
+    $$('[data-op]', f).forEach(b => b.onclick = () => { const o = Object.assign({}, ops.find(x => x.id === b.dataset.op), D.plan[b.dataset.op] || {}); formIntervalle(o); });
+  });
+}
+function vuePoints() {
+  const m = D.vehicule.moteur || 'tu3';
+  const crit = P.CRITAIR[(P.MOTEURS[m] || {}).energie || 'essence'];
+  const bloc = l => `<div class="carte plate">${l.map(p => `<div class="liste-item" style="cursor:default;align-items:flex-start"><i class="niv ${p.niveau}"></i><div class="corps"><div class="titre">${esc(p.titre)}</div><div class="detail">${esc(p.texte)}</div></div></div>`).join('')}</div>`;
+  ouvrir(`${tete('Points à surveiller')}
+    <p class="muet">Synthèse de témoignages et d'articles sur la 206+, pas de statistiques : c'est une liste de vigilance, pas un diagnostic. Point rouge : le plus cité.</p>
+    <h2>${esc(P.MOTEURS[m] ? P.MOTEURS[m].nom : 'Motorisation')}</h2>${bloc(P.POINTS_FAIBLES[m] || [])}
+    <h2>Toutes motorisations</h2>${bloc(P.POINTS_FAIBLES.tous)}
+    <h2>Crit'Air et ZFE</h2><div class="carte"><b>Crit'Air ${crit.classe} (${crit.couleur})</b><p class="muet" style="margin-top:6px">${esc(crit.texte)}</p><a href="https://www.strasbourg.eu/fr/la-zfe-m" target="_blank" rel="noopener">Règles à jour sur strasbourg.eu</a></div>
+    <h2>Rappels constructeur</h2><div class="carte"><p class="muet">Vérifie si ta voiture est concernée par un rappel, avec le numéro de série (case E de la carte grise).</p><a href="https://rappel.conso.gouv.fr" target="_blank" rel="noopener">Rappel Conso</a></div>`);
+}
+function vueSources() {
+  ouvrir(`${tete('Sources et avertissement')}
+    <p class="muet">Les intervalles « constructeur » reprennent le plan Peugeot de la 206+ publié par idGarages. Les éléments « conseil » sont des recommandations générales pour une voiture de cet âge qui roule peu, ou des points faibles connus du modèle. Ton carnet d'entretien et ton garagiste font foi : ajuste les intervalles dans Réglages si besoin.</p>
+    <div class="carte plate">${P.SOURCES.map(s => `<a class="liste-item" href="${s.url}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit"><div class="corps"><div class="titre">${esc(s.titre)}</div><div class="detail">${esc(s.url.replace(/^https?:\/\//, ''))}</div></div><span class="chevron">↗</span></a>`).join('')}</div>`);
+}
+
+// ---------- sauvegarde GitHub ----------
+const b64enc = s => { const o = new TextEncoder().encode(s); let b = ''; for (let i = 0; i < o.length; i += 0x8000) b += String.fromCharCode.apply(null, o.subarray(i, i + 0x8000)); return btoa(b); };
+const b64dec = s => new TextDecoder().decode(Uint8Array.from(atob(s.replace(/\s/g, '')), c => c.charCodeAt(0)));
+async function gh(methode, chemin, corps) {
+  const r = await fetch(`https://api.github.com/repos/${SYNC.depot}/contents/${chemin}`, {
+    method: methode, cache: 'no-store',
+    headers: { 'Authorization': `Bearer ${SYNC.token}`, 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' },
+    body: corps ? JSON.stringify(corps) : undefined
+  });
+  if (r.status === 404 && methode === 'GET') return null;
+  if (!r.ok) { const t = await r.text(); const e = new Error(`GitHub ${r.status}`); e.status = r.status; e.detail = t; throw e; }
+  return r.json();
+}
+let syncEnCours = false, syncEncore = false, syncMinuterie = null;
+function planifierSync() { if (!SYNC.token) return; clearTimeout(syncMinuterie); syncMinuterie = setTimeout(synchroniser, 1200); }
+async function synchroniser(essai = 0) {
+  if (!SYNC.token) return;
+  if (syncEnCours) { syncEncore = true; return; }
+  if (!navigator.onLine) { SYNC.etat = 'err'; SYNC.message = 'Hors ligne'; rendreSync(); return; }
+  syncEnCours = true; SYNC.etat = 'cours'; rendreSync();
+  try {
+    const distant = await gh('GET', SYNC.chemin + '?ref=main');
+    let fusion = D, sha;
+    if (distant) { sha = distant.sha; fusion = M.fusionner(D, JSON.parse(b64dec(distant.content))); }
+    if (!fusion.reglages.appUrl) fusion.reglages.appUrl = location.origin + location.pathname;
+    const texte = JSON.stringify(fusion, null, 1);
+    const distantTexte = distant ? b64dec(distant.content) : null;
+    if (texte !== distantTexte) {
+      await gh('PUT', SYNC.chemin, { message: `Carnet mis à jour (${new Date().toLocaleString('fr-FR')})`, content: b64enc(texte), sha, branch: 'main' });
+    }
+    // si une saisie a eu lieu pendant l'échange, on la garde et on renvoie ensuite
+    const courant = D;
+    if ((courant.maj || '') !== (fusion.maj || '') && courant !== fusion) { D = M.normaliser(M.fusionner(courant, fusion)); if ((courant.maj || '') > (fusion.maj || '')) syncEncore = true; }
+    else D = M.normaliser(fusion);
+    ecrireLocal();
+    SYNC.derniere = new Date().toISOString(); SYNC.etat = 'ok'; SYNC.message = 'Sauvegardé';
+  } catch (e) {
+    if ((e.status === 409 || e.status === 422) && essai < 2) { syncEnCours = false; return synchroniser(essai + 1); }
+    SYNC.etat = 'err';
+    SYNC.message = e.status === 401 ? 'Jeton refusé' : e.status === 404 ? 'Dépôt introuvable' : e.status === 403 ? 'Accès refusé' : 'Erreur de synchro';
+    console.warn(e, e.detail);
+  }
+  syncEnCours = false; sauverSyncCfg(); rendre();
+  if (syncEncore) { syncEncore = false; planifierSync(); }
+}
+function rendreSync() {
+  const el = $('#a-sync'); if (!el) return;
+  el.className = 'sync ' + (SYNC.token ? SYNC.etat : '');
+  $('span', el).textContent = !SYNC.token ? 'Local' : SYNC.etat === 'cours' ? 'Synchro…' : SYNC.etat === 'ok' ? 'Sauvegardé' : (SYNC.message || 'Synchro');
+}
+function formSync(depuisConfig, suite) {
+  ouvrir(`${depuisConfig ? '' : tete('Sauvegarde GitHub')}
+    <p class="muet">Les données sont enregistrées dans un dépôt <b>privé</b> de ton compte GitHub. Si tu perds le téléphone, tu réinstalles l'appli, tu remets le jeton et tout revient.</p>
+    <ol class="guide muet">
+      <li>Crée un dépôt privé <b>carnet-206-donnees</b> sur GitHub (avec les fichiers fournis).</li>
+      <li>Crée un jeton : GitHub › Settings › Developer settings › Fine-grained tokens › Generate new token. Accès : ce seul dépôt. Permission : <b>Contents : Read and write</b>. Expiration : la plus longue possible.</li>
+      <li>Colle le jeton ci-dessous. Il reste sur cet appareil ; garde-le aussi dans ton gestionnaire de mots de passe.</li>
+    </ol>
+    <label class="champ"><span>Dépôt (compte/nom)</span><input id="g-depot" value="${esc(SYNC.depot)}" autocapitalize="off" autocorrect="off" spellcheck="false"></label>
+    <label class="champ"><span>Jeton d'accès</span><input id="g-tok" type="password" value="${esc(SYNC.token)}" placeholder="github_pat_…" autocapitalize="off" autocorrect="off" spellcheck="false"></label>
+    <button class="btn" id="g-ok">Tester et enregistrer</button>
+    ${SYNC.token ? '<div style="height:10px"></div><button class="btn discret" id="g-off">Désactiver sur cet appareil</button>' : ''}
+    ${depuisConfig ? '<div style="height:10px"></div><button class="btn discret" id="g-plus-tard">Plus tard</button>' : ''}
+    <p class="tres-muet" id="g-msg" style="margin-top:10px"></p>`, f => {
+    $('#g-ok', f).onclick = async () => {
+      SYNC.depot = $('#g-depot', f).value.trim(); SYNC.token = $('#g-tok', f).value.trim();
+      $('#g-msg', f).textContent = 'Connexion…';
+      try {
+        const r = await fetch(`https://api.github.com/repos/${SYNC.depot}`, { headers: { Authorization: `Bearer ${SYNC.token}`, Accept: 'application/vnd.github+json' } });
+        if (!r.ok) throw new Error(r.status === 404 ? 'Dépôt introuvable ou jeton sans accès à ce dépôt' : r.status === 401 ? 'Jeton invalide' : 'Erreur ' + r.status);
+        const info = await r.json();
+        if (!info.private) $('#g-msg', f).textContent = 'Attention : ce dépôt est public. Passe-le en privé.';
+        sauverSyncCfg();
+        await synchroniser();
+        if (SYNC.etat === 'ok') { toast('Sauvegarde active'); suite ? suite() : fermer(); }
+        else $('#g-msg', f).textContent = SYNC.message;
+      } catch (e) { $('#g-msg', f).textContent = e.message; }
+    };
+    if ($('#g-off', f)) $('#g-off', f).onclick = () => { SYNC.token = ''; SYNC.etat = 'local'; sauverSyncCfg(); rendre(); fermer(); };
+    if ($('#g-plus-tard', f)) $('#g-plus-tard', f).onclick = () => suite ? suite() : fermer();
+  });
+}
+function formNtfy(depuisConfig, suite) {
+  if (!D.reglages.ntfyTopic) { D.reglages.ntfyTopic = 'carnet206-' + Array.from(crypto.getRandomValues(new Uint8Array(9)), b => 'abcdefghijkmnpqrstuvwxyz23456789'[b % 32]).join(''); ecrireLocal(); }
+  const t = D.reglages.ntfyTopic;
+  ouvrir(`${depuisConfig ? '' : tete('Notifications')}
+    <p class="muet">Chaque soir, une tâche automatique lit ta sauvegarde GitHub, recalcule les échéances et t'envoie une notification quand un passage au garage approche ou quand il faut mettre à jour le kilométrage.</p>
+    <ol class="guide muet">
+      <li>Installe l'appli gratuite <b>ntfy</b> sur l'iPhone (App Store) et autorise les notifications.</li>
+      <li>Dans ntfy, touche <b>+</b> et abonne-toi à ce sujet (serveur ntfy.sh par défaut) :</li>
+    </ol>
+    <span class="code" id="n-topic">${esc(t)}</span>
+    <div class="rangee"><button class="btn second petit" id="n-copier">Copier</button><button class="btn second petit" id="n-test">Envoyer un test</button></div>
+    <p class="tres-muet" style="margin-top:10px">Le nom du sujet sert de mot de passe : ne le partage pas. Les rappels nécessitent la sauvegarde GitHub et le workflow fourni dans le dépôt de données.</p>
+    <label class="interrupteur"><span>Rappels actifs</span><input id="n-actif" type="checkbox" ${D.reglages.rappelsActifs !== false ? 'checked' : ''}></label>
+    <button class="btn" id="n-ok">${depuisConfig ? 'Continuer' : 'Enregistrer'}</button>
+    <p class="tres-muet" id="n-msg" style="margin-top:10px"></p>`, f => {
+    $('#n-copier', f).onclick = async () => { try { await navigator.clipboard.writeText(t); toast('Copié'); } catch (e) { toast('Copie impossible, sélectionne le texte'); } };
+    $('#n-test', f).onclick = async () => {
+      $('#n-msg', f).textContent = 'Envoi…';
+      try {
+        const r = await fetch('https://ntfy.sh/', { method: 'POST', body: JSON.stringify({ topic: t, title: 'Carnet 206+', message: 'Notification de test : tout fonctionne.', tags: ['car'] }) });
+        $('#n-msg', f).textContent = r.ok ? 'Envoyé. Si rien n\'arrive, vérifie l\'abonnement dans ntfy.' : 'Erreur ' + r.status;
+      } catch (e) { $('#n-msg', f).textContent = 'Envoi impossible (hors ligne ?)'; }
+    };
+    $('#n-ok', f).onclick = () => { modifier(x => { x.reglages.ntfyTopic = t; x.reglages.rappelsActifs = $('#n-actif', f).checked; x.reglages.appUrl = location.origin + location.pathname; }); suite ? suite() : fermer(); };
+  });
+}
+function exporter() {
+  const blob = new Blob([JSON.stringify(D, null, 1)], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `carnet-206-${isoAuj()}.json`;
+  document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+}
+function importer() {
+  const i = document.createElement('input'); i.type = 'file'; i.accept = 'application/json,.json';
+  i.onchange = async () => {
+    try { const d = JSON.parse(await i.files[0].text()); if (!d.vehicule) throw 0; if (!confirm('Remplacer les données de cet appareil par ce fichier ?')) return; D = M.normaliser(d); D.maj = new Date().toISOString(); ecrireLocal(); rendre(); planifierSync(); toast('Données importées'); }
+    catch (e) { toast('Fichier invalide'); }
+  };
+  i.click();
+}
+
+// ---------- configuration initiale ----------
+let etapeConf = 0, brouillon = null;
+function lancerConfiguration() {
+  if (!brouillon) { brouillon = M.normaliser(D); if (!brouillon.vehicule.immatriculation) brouillon.vehicule.immatriculation = 'AB-023-VY'; }
+  document.body.dataset.vue = 'config';
+  $$('.vue').forEach(s => s.classList.remove('active'));
+  $('.onglets').style.display = 'none';
+  let v = $('#v-config');
+  if (!v) { v = document.createElement('section'); v.id = 'v-config'; v.className = 'vue'; document.body.insertBefore(v, $('.fab')); }
+  v.classList.add('active');
+  const N = 6;
+  const pts = `<div class="etapes">${Array.from({ length: N }, (_, i) => `<i class="${i <= etapeConf ? 'fait' : ''}"></i>`).join('')}</div>`;
+  const nav = (suiv = 'Continuer', retour = true) => `<div style="margin-top:auto;padding-top:16px"><button class="btn" id="c-suiv">${suiv}</button>${retour ? '<div style="height:10px"></div><button class="btn discret" id="c-prec">Retour</button>' : ''}</div>`;
+  const b = brouillon;
+  let h = '';
+  if (etapeConf === 0) h = `<div class="accueil-config">${pts}<h1 style="margin:10px 4px 4px">Carnet 206+</h1><p class="muet" style="margin:0 4px 10px">Le suivi d'entretien de ta Peugeot 206+, avec des rappels qui s'adaptent à ton kilométrage.</p>${svgVoiture()}
+      <div class="carte" style="margin-top:14px"><p class="muet">On va renseigner l'essentiel en quelques écrans : le véhicule, le kilométrage, le carnet, l'administratif, puis la sauvegarde. Tout ce que tu ne connais pas encore peut être complété plus tard.</p></div>${nav('Commencer', false)}<div style="height:10px"></div><button class="btn discret" id="c-restaurer">J'ai déjà une sauvegarde GitHub</button></div>`;
+  if (etapeConf === 1) h = `<div class="accueil-config">${pts}<h1 style="margin:0 4px 14px">Le véhicule</h1>${champsVehicule(b.vehicule)}${nav()}</div>`;
+  if (etapeConf === 2) h = `<div class="accueil-config">${pts}<h1 style="margin:0 4px 14px">Kilométrage</h1>
+      <label class="champ"><span>Kilométrage actuel au compteur</span><input id="c-km" type="number" inputmode="numeric" value="${(b.releves[b.releves.length - 1] || {}).km || ''}" placeholder="ex. 121500"></label>
+      <div class="champ"><span>Environ combien de km par an ?</span></div>
+      <div class="puces" id="c-kman">${[[2000, '< 3 000'], [4500, '3 000 à 6 000'], [8000, '6 000 à 10 000'], [12000, '> 10 000']].map(([val, l]) => `<button data-v="${val}" class="${Math.abs(b.vehicule.kmAn - val) < 1500 ? 'actif' : ''}">${l}</button>`).join('')}</div>
+      <p class="aide">C'est un point de départ : l'appli calcule ensuite ton rythme réel à partir de tes relevés, et te demande le kilométrage plus ou moins souvent selon ce rythme.</p>${nav()}</div>`;
+  if (etapeConf === 3) {
+    const cles = ['vidange', 'distribution', 'filtre_air', b.vehicule.moteur === 'dv4' ? 'filtre_gasoil' : 'bougies', 'filtre_habitacle', 'liquide_frein', 'pneus_avant', 'pneus_arriere'];
+    const ops = P.operationsPour(b.vehicule.moteur).filter(o => cles.includes(o.id));
+    h = `<div class="accueil-config">${pts}<h1 style="margin:0 4px 6px">Le carnet</h1><p class="muet" style="margin:0 4px 14px">Dernière fois que chaque opération a été faite, et pour les pneus, quand ils ont été changés. Laisse vide ce que tu ne sais pas : tu pourras compléter plus tard.</p>
+      ${ops.map(o => { const e = b.etatInitial[o.id] || {}; return `<div class="carte" style="padding:12px 14px"><div style="font-weight:600;margin-bottom:8px">${ICONES[o.icone]} ${esc(o.nom)}</div><div class="rangee"><label class="champ" style="margin:0"><span>Date</span><input type="date" data-ei="${o.id}" data-k="date" value="${e.date || ''}"></label><label class="champ" style="margin:0"><span>Km</span><input type="number" inputmode="numeric" data-ei="${o.id}" data-k="km" value="${e.km ?? ''}"></label></div></div>`; }).join('')}
+      ${nav('Continuer')}</div>`;
+  }
+  if (etapeConf === 4) h = `<div class="accueil-config">${pts}<h1 style="margin:0 4px 14px">Administratif</h1>
+      <label class="champ"><span>Date du dernier contrôle technique</span><input id="c-ct" type="date" value="${b.admin.ctDernier || ''}"></label>
+      <p class="aide">Elle figure sur le procès-verbal du CT ou sur le macaron du pare-brise (mois et année de la prochaine échéance).</p>
+      <label class="champ"><span>Prochaine échéance d'assurance</span><input id="c-as" type="date" value="${b.admin.assuranceEcheance || ''}"></label>
+      <label class="champ"><span>Assureur</span><input id="c-asn" value="${esc(b.admin.assureur)}"></label>${nav()}</div>`;
+  if (etapeConf === 5) h = `<div class="accueil-config">${pts}<h1 style="margin:0 4px 14px">Sauvegarde et rappels</h1>
+      <div class="carte"><b>Sauvegarde GitHub</b><p class="muet" style="margin-top:6px">${SYNC.token ? 'Active sur ' + esc(SYNC.depot) + '.' : 'Pour ne rien perdre si tu supprimes l\'appli ou changes de téléphone.'}</p><button class="btn second" id="c-sync">${SYNC.token ? 'Modifier' : 'Configurer'}</button></div>
+      <div class="carte"><b>Notifications</b><p class="muet" style="margin-top:6px">${b.reglages.ntfyTopic ? 'Sujet ntfy : ' + esc(b.reglages.ntfyTopic) : 'Rappels de garage et de kilométrage via l\'appli ntfy.'}</p><button class="btn second" id="c-ntfy">${b.reglages.ntfyTopic ? 'Voir' : 'Configurer'}</button></div>
+      <p class="aide">Tu peux faire ces deux réglages plus tard, depuis l'onglet Réglages.</p>${nav('Terminer')}</div>`;
+  v.innerHTML = h;
+  window.scrollTo(0, 0);
+
+  const lire = () => {
+    if (etapeConf === 1) b.vehicule = lireVehicule(v, b.vehicule);
+    if (etapeConf === 3) $$('[data-ei]', v).forEach(i => { const id = i.dataset.ei; b.etatInitial[id] = b.etatInitial[id] || {}; b.etatInitial[id][i.dataset.k] = i.value === '' ? null : (i.dataset.k === 'km' ? +i.value : i.value); if (!b.etatInitial[id].date) delete b.etatInitial[id]; });
+    if (etapeConf === 4) { b.admin.ctDernier = $('#c-ct', v).value || null; b.admin.assuranceEcheance = $('#c-as', v).value || null; b.admin.assureur = $('#c-asn', v).value.trim(); }
+  };
+  if (etapeConf === 2) $$('#c-kman button', v).forEach(x => x.onclick = () => { b.vehicule.kmAn = +x.dataset.v; $$('#c-kman button', v).forEach(y => y.classList.toggle('actif', y === x)); });
+  if (etapeConf === 0) $('#c-restaurer', v).onclick = () => formSync(false, () => {
+    fermer();
+    if (D.configure) { brouillon = null; $('#v-config').classList.remove('active'); $('.onglets').style.display = ''; allerA('accueil'); rendre(); toast('Carnet restauré'); }
+    else { brouillon = M.normaliser(D); toast('Aucun carnet trouvé dans ce dépôt'); lancerConfiguration(); }
+  });
+  if (etapeConf === 5) {
+    const retourConf = () => { fermer(); brouillon = M.normaliser(D); lancerConfiguration(); };
+    $('#c-sync', v).onclick = () => { D = b; formSync(false, retourConf); };
+    $('#c-ntfy', v).onclick = () => { D = b; formNtfy(false, retourConf); };
+  }
+  $('#c-suiv', v).onclick = () => {
+    lire();
+    if (etapeConf === 1 && !b.vehicule.moteur) return toast('Choisis la motorisation (tu pourras la corriger)');
+    if (etapeConf === 2) {
+      const km = +$('#c-km', v).value;
+      if (!km) return toast('Indique le kilométrage actuel');
+      const der = b.releves[b.releves.length - 1];
+      if (der && der.date === isoAuj()) der.km = km; else b.releves.push({ id: M.nouvelId(), date: isoAuj(), km });
+    }
+    if (etapeConf === 5) {
+      b.configure = true; b.maj = new Date().toISOString(); b.reglages.appUrl = location.origin + location.pathname;
+      D = b; brouillon = null; ecrireLocal();
+      $('#v-config').classList.remove('active'); $('.onglets').style.display = '';
+      allerA('accueil'); rendre(); planifierSync(); toast('Carnet prêt');
+      return;
+    }
+    etapeConf++; lancerConfiguration();
+  };
+  if ($('#c-prec', v)) $('#c-prec', v).onclick = () => { lire(); etapeConf--; lancerConfiguration(); };
+}
+
+// ---------- délégation des clics ----------
+document.addEventListener('click', ev => {
+  const op = ev.target.closest('[data-op]');
+  if (op && !op.closest('#feuille')) return detailOp(op.dataset.op);
+  const j = ev.target.closest('[data-j]');
+  if (j && !j.closest('#feuille')) return ouvrirEntree(j.dataset.j);
+  const a = ev.target.closest('[data-action]'); if (!a) return;
+  ({
+    km: formKm, ajouter: choixAjout, vehicule: formVehicule, admin: formAdmin, plan: vuePlan, points: vuePoints, sources: vueSources,
+    'cfg-sync': () => formSync(), 'cfg-ntfy': () => formNtfy(), export: exporter, import: importer,
+    'vers-entretien': () => allerA('entretien'), 'vers-plus': () => allerA('plus'),
+    reinit: () => { if (confirm('Effacer les données de cet appareil ? La sauvegarde GitHub n\'est pas touchée.')) { localStorage.removeItem(CLE); location.reload(); } }
+  })[a.dataset.action]?.();
+});
+
+// ---------- démarrage ----------
+function routeInitiale() {
+  const h = location.hash.replace('#', '');
+  if (!D.configure) return;
+  if (h === 'km') { allerA('accueil'); setTimeout(formKm, 300); }
+  else if (['accueil', 'entretien', 'journal', 'couts', 'plus'].includes(h)) allerA(h);
+}
+window.addEventListener('hashchange', routeInitiale);
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') { rendre(); synchroniser(); } });
+rendre();
+routeInitiale();
+if (SYNC.token) synchroniser();
+if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
+</script>
+</body>
+</html>
